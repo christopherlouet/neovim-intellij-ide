@@ -1,0 +1,41 @@
+name: Lint
+
+on:
+  pull_request:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck lua5.1 luarocks
+          sudo luarocks install luacheck
+          curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+          sudo npm i -g markdownlint-cli2
+
+      - name: Shellcheck
+        run: |
+          shellcheck -x install.sh uninstall.sh healthcheck.sh intellij-migrate.sh || exit 1
+
+      - name: Markdownlint
+        run: |
+          markdownlint-cli2 "**/*.md" "#node_modules"
+
+      - name: Stylua (format check)
+        uses: JohnnyMorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+          args: --check nvim/lua
+
+      - name: Luacheck
+        run: |
+          luacheck nvim/lua

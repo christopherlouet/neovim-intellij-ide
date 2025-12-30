@@ -1,0 +1,65 @@
+# ======================
+# IDEs / Editors
+# ======================
+.idea/
+.vscode/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# ======================
+# Neovim local artifacts
+# ======================
+.nvim/
+.nvimrc
+nvim/.cache/
+nvim/.local/
+nvim/.sessions/
+nvim/.shada
+nvim/.undo/
+
+# User-specific config overrides
+lua/config/local.lua
+
+# ======================
+# OS / System
+# ======================
+.DS_Store
+Thumbs.db
+
+# ======================
+# Logs / Temp
+# ======================
+*.log
+tmp/
+temp/
+
+# ======================
+# Language-specific
+# ======================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+env/
+
+# ======================
+# Build / Artifacts
+# ======================
+dist/
+build/
+coverage/
+
+# ======================
+# Archives
+# ======================
+*.tar.gz
+*.zip

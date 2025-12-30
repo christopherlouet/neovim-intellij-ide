@@ -1,0 +1,29 @@
+name: Neovim Smoke Test
+
+on:
+  pull_request:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Neovim (official release)
+        run: |
+          set -e
+          curl -fsSL https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz -o /tmp/nvim.tar.gz
+          tar -C /tmp -xzf /tmp/nvim.tar.gz
+          echo "/tmp/nvim-linux64/bin" >> $GITHUB_PATH
+          nvim --version
+
+      - name: Headless startup
+        run: |
+          nvim --headless "+qall" 
+
+      - name: Checkhealth (non-interactive)
+        run: |
+          nvim --headless "+checkhealth" +qa

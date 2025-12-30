@@ -1,0 +1,67 @@
+name: Install / Healthcheck
+
+on:
+  pull_request:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  ubuntu-full:
+    name: Ubuntu (full install + healthcheck)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Make scripts executable
+        run: |
+          chmod +x install.sh uninstall.sh healthcheck.sh intellij-migrate.sh || true
+
+      - name: Install (Ubuntu)
+        env:
+          # Avoid interactive prompts
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          ./install.sh --yes --prefix=$HOME/.local/bin
+
+      - name: Healthcheck (headless)
+        run: |
+          ./healthcheck.sh
+
+  debian-dryrun:
+    name: Debian (dry-run)
+    runs-on: ubuntu-latest
+    container:
+      image: debian:stable-slim
+    steps:
+      - name: Install base deps for checkout
+        run: |
+          apt-get update
+          apt-get install -y git curl ca-certificates tar gzip sudo bash
+
+      - uses: actions/checkout@v4
+
+      - name: Dry-run install script (Debian path)
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          chmod +x install.sh
+          ./install.sh --dry-run --yes --prefix=/usr/local/bin
+
+  fedora-dryrun:
+    name: Fedora (dry-run)
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+    steps:
+      - name: Install base deps for checkout
+        run: |
+          dnf -y update
+          dnf -y install git curl ca-certificates tar gzip sudo bash
+
+      - uses: actions/checkout@v4
+
+      - name: Dry-run install script (Fedora path)
+        run: |
+          chmod +x install.sh
+          ./install.sh --dry-run --yes --prefix=/usr/local/bin
