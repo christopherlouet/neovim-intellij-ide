@@ -21,9 +21,11 @@ jobs:
       - name: Install Neovim (official release)
         run: |
           set -e
-          curl -fsSL https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz -o /tmp/nvim.tar.gz
-          tar -C /tmp -xzf /tmp/nvim.tar.gz
-          echo "/tmp/nvim-linux64/bin" >> $GITHUB_PATH
+          # Download and install Neovim AppImage
+          curl -fsSL https://github.com/neovim/neovim/releases/latest/download/nvim.appimage -o /tmp/nvim.appimage
+          chmod +x /tmp/nvim.appimage
+          sudo mkdir -p /usr/local/bin
+          sudo mv /tmp/nvim.appimage /usr/local/bin/nvim
           nvim --version
 
       - name: Headless startup
