@@ -57,22 +57,25 @@ run "mkdir -p "$BACKUP_DIR""
 say "1) Suppression Neovim"
 if is_debian_like; then
   if dpkg -s neovim >/dev/null 2>&1; then
-    run "sudo apt remove -y"
+    run "sudo apt remove -y neovim"
     run "sudo apt autoremove -y"
   fi
   # If Debian AppImage was installed:
+  if [ -f "${HOME}/.local/bin/nvim" ]; then
+    run "rm -f \"${HOME}/.local/bin/nvim\""
+  fi
   if [ -f /usr/local/bin/nvim ]; then
-    run "sudo rm -f "
+    run "sudo rm -f /usr/local/bin/nvim"
   fi
 elif is_fedora_like; then
-  run "sudo dnf -y remove"
+  run "sudo dnf -y remove neovim"
 else
   echo "OS non supporté automatiquement (ID=$OS_ID, LIKE=$OS_LIKE)."
   echo "Suppression manuelle requise."
 fi
 
 say "2) Nettoyage dossiers Neovim"
-run "rm -rf "$NVIM_CFG" "$NVIM_DATA" "$NVIM_CACHE""
+run "rm -rf \"$NVIM_CFG\" \"$NVIM_DATA\" \"$NVIM_CACHE\""
 
 say "Terminé ✅"
 echo "Backup conservé: $BACKUP_DIR"

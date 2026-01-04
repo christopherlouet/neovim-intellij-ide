@@ -3,14 +3,20 @@ name: Neovim Smoke Test
 on:
   pull_request:
   push:
-    branches: [ main, master ]
+    branches: [main, master, lazyvim]
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   smoke:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Install Neovim (official release)
         run: |
@@ -22,7 +28,7 @@ jobs:
 
       - name: Headless startup
         run: |
-          nvim --headless "+qall" 
+          nvim --headless "+qall"
 
       - name: Checkhealth (non-interactive)
         run: |

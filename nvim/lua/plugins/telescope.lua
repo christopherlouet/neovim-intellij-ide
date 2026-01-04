@@ -11,7 +11,7 @@ return {
         view = { width = 32 },
       })
       vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Explorer" })
-    end
+    end,
   },
 
   {
@@ -27,10 +27,14 @@ return {
       vim.keymap.set("n", "<leader>fb", b.buffers, { desc = "Buffers" })
       vim.keymap.set("n", "<leader>fs", b.lsp_document_symbols, { desc = "Symbols (file)" })
       vim.keymap.set("n", "<leader>fS", b.lsp_workspace_symbols, { desc = "Symbols (workspace)" })
-    end
+    end,
   },
-  { "nvim-telescope/telescope-fzf-native.nvim", build = "make",
-    config = function() require("telescope").load_extension("fzf") end
+  {
+    "nvim-telescope/telescope-fzf-native.nvim",
+    build = "make",
+    config = function()
+      require("telescope").load_extension("fzf")
+    end,
   },
 
   {
@@ -42,13 +46,18 @@ return {
 
   {
     "stevearc/aerial.nvim",
+    enabled = false, -- Désactivé temporairement (dépend de treesitter)
     opts = {},
     config = function()
       require("aerial").setup()
       vim.keymap.set("n", "<leader>so", "<cmd>AerialToggle<cr>", { desc = "Outline / Structure" })
-    end
+    end,
   },
 
   -- LSP file operations (rename/move with LSP awareness)
-  { "antosha417/nvim-lsp-file-operations", dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-tree.lua" }, opts = {} },
+  {
+    "antosha417/nvim-lsp-file-operations",
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-tree.lua" },
+    opts = {},
+  },
 }

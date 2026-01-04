@@ -8,7 +8,7 @@ return {
         direction = "horizontal",
         float_opts = { border = "curved" },
       })
-    end
+    end,
   },
 
   {
@@ -18,6 +18,6 @@ return {
       require("overseer").setup()
       vim.keymap.set("n", "<leader>or", "<cmd>OverseerRun<cr>", { desc = "Run task" })
       vim.keymap.set("n", "<leader>ot", "<cmd>OverseerToggle<cr>", { desc = "Task list" })
-    end
+    end,
   },
 }
