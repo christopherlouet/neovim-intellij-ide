@@ -8,6 +8,14 @@ return {
         direction = "horizontal",
         float_opts = { border = "curved" },
       })
+      vim.keymap.set("n", "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", { desc = "Toggle terminal flottant" })
+      vim.keymap.set(
+        "n",
+        "<leader>th",
+        "<cmd>ToggleTerm direction=horizontal<cr>",
+        { desc = "Toggle terminal horizontal" }
+      )
+      vim.keymap.set("n", "<leader>tv", "<cmd>ToggleTerm direction=vertical<cr>", { desc = "Toggle terminal vertical" })
     end,
   },
 
