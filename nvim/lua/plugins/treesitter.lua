@@ -1,32 +1,47 @@
-return {
-  {
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    config = function()
-      local ok, configs = pcall(require, "nvim-treesitter.configs")
-      if not ok then
-        if #vim.api.nvim_list_uis() > 0 then
-          vim.notify(
-            "nvim-treesitter not available yet. Run :Lazy sync then restart Neovim.",
-            vim.log.levels.WARN
-          )
-        end
-        return
-      end
+-- Treesitter désactivé temporairement - utilise la coloration native de Neovim
+-- Pour réactiver : décommenter le code ci-dessous et exécuter :Lazy sync
 
-      configs.setup({
-        ensure_installed = {
-          "lua","javascript","typescript","tsx","html","css","json","bash","markdown","prisma"
-        },
-        highlight = { enable = true },
-        indent = { enable = true },
-      })
-    end,
-  },
+return {
+  -- {
+  --   "nvim-treesitter/nvim-treesitter",
+  --   build = ":TSUpdate",
+  --   event = { "BufReadPost", "BufNewFile" },
+  --   opts = {
+  --     ensure_installed = {
+  --       "lua",
+  --       "javascript",
+  --       "typescript",
+  --       "tsx",
+  --       "html",
+  --       "css",
+  --       "json",
+  --       "bash",
+  --       "markdown",
+  --       "markdown_inline",
+  --       "prisma",
+  --     },
+  --     sync_install = false,
+  --     auto_install = false,
+  --     highlight = {
+  --       enable = true,
+  --       additional_vim_regex_highlighting = false,
+  --     },
+  --     indent = {
+  --       enable = true,
+  --     },
+  --   },
+  -- },
 
   {
     "windwp/nvim-ts-autotag",
+    enabled = false, -- Désactivé car dépend de treesitter
+    event = "InsertEnter",
+    ft = { "html", "javascript", "typescript", "javascriptreact", "typescriptreact", "tsx", "jsx" },
     dependencies = { "nvim-treesitter/nvim-treesitter" },
-    opts = {},
+    opts = {
+      enable_close = true,
+      enable_rename = true,
+      enable_close_on_slash = false,
+    },
   },
 }

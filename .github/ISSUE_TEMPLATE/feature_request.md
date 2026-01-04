@@ -7,5 +7,7 @@ assignees: ""
 ---
 
 ## Problème / motivation
+
 ## Proposition
+
 ## Alternatives

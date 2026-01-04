@@ -7,15 +7,19 @@ assignees: ""
 ---
 
 ## Description
+
 Décris le problème.
 
 ## Repro
+
 Étapes pour reproduire :
 
 ## Attendu
+
 ## Observé
 
 ## Environnement
+
 - OS:
 - Neovim: (`nvim --version`)
 - Terminal:

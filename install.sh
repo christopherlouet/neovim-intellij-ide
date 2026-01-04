@@ -130,7 +130,7 @@ if is_debian_like; then
   else
     # Debian: use AppImage for a recent Neovim (repos can lag)
     run "sudo apt install -y fuse3 || true"
-    run "tmp=\"$(mktemp -d)\" && curl -fsSL https://github.com/neovim/neovim/releases/latest/download/nvim.appimage -o \"$tmp/nvim.appimage\" && chmod +x \"$tmp/nvim.appimage\" && sudo install -m 0755 \"$tmp/nvim.appimage\" \"${PREFIX}/nvim\" && rm -rf \"$tmp\""
+    run 'NVIM_TMP="$(mktemp -d)" && curl -fsSL https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage -o "$NVIM_TMP/nvim.appimage" && chmod +x "$NVIM_TMP/nvim.appimage" && sudo install -m 0755 "$NVIM_TMP/nvim.appimage" "'"${PREFIX}"'/nvim" && rm -rf "$NVIM_TMP"'
   fi
 elif is_fedora_like; then
   run "sudo dnf -y install neovim"
@@ -203,8 +203,61 @@ say "   -> Treesitter update (parsers compilés, peut être long)"
 run "timeout ${TS_TIMEOUT}s nvim --headless \"+TSUpdate\" +qa >\"${LOG_DIR}/treesitter-update.log\" 2>&1 || true"
 [ "$DRY_RUN" -eq 1 ] || echo "     log: ${LOG_DIR}/treesitter-update.log"
 
+say "7) Installation des outils supplémentaires (formatters/linters)"
+echo "Les outils suivants seront installés via Mason au premier lancement de Neovim:"
+echo "  - Formatters: prettier, stylua, black, shfmt, php-cs-fixer"
+echo "  - Linters: eslint_d, markdownlint"
+echo "  - LSP: yamlls, terraformls, ansiblels, helm_ls, sqlls"
+echo ""
+echo "Vous pouvez les installer maintenant avec: :MasonInstallDevTools"
+echo "ou manuellement via :Mason"
+
+say "8) Installation pre-commit (optionnel)"
+if need_cmd python3; then
+  echo "Installation de pre-commit pour validation automatique..."
+  if run "python3 -m pip install --user pre-commit"; then
+    echo "   ✓ pre-commit installé"
+    echo ""
+    echo "Pour activer les hooks Git:"
+    echo "  cd $(pwd)"
+    echo "  pre-commit install"
+    echo "  pre-commit install --hook-type commit-msg"
+  else
+    echo "   ⚠ Échec installation pre-commit (non-bloquant)"
+  fi
+else
+  echo "Python3 non trouvé - pre-commit non installé"
+  echo "Pour l'installer manuellement: pip install pre-commit"
+fi
+
 say "Terminé ✅"
 
-echo "Backup: $BACKUP_DIR"
-echo "Ouvre Neovim: nvim"
-echo "Healthcheck: ./healthcheck.sh"
+echo ""
+echo "📦 Backup: $BACKUP_DIR"
+echo ""
+echo "🚀 Prochaines étapes:"
+echo "  1. Démarrer Neovim:    nvim"
+echo "  2. Installer outils:    :MasonInstallDevTools"
+echo "  3. Vérifier santé:      :checkhealth"
+echo "  4. Ou lancer:           ./healthcheck.sh"
+echo ""
+echo "🔧 Pour les contributeurs:"
+echo "  5. Installer pre-commit hooks: pre-commit install"
+echo "  6. Valider avant commit:       pre-commit run --all-files"
+echo ""
+echo "📚 Nouveaux plugins installés:"
+echo "  Navigation: leap.nvim, harpoon, todo-comments"
+echo "  DevOps: kubectl.nvim, terraform, ansible"
+echo "  Git: octo.nvim (GitHub PRs/Issues)"
+echo "  Database: vim-dadbod-ui"
+echo "  HTTP: rest.nvim (REST client)"
+echo ""
+echo "💡 Raccourcis essentiels:"
+echo "  <leader>k   - Kubectl"
+echo "  <leader>Du  - Database UI"
+echo "  <leader>rr  - Run HTTP request"
+echo "  <leader>gp  - GitHub PRs"
+echo "  <leader>st  - Search TODOs"
+echo "  s           - Leap jump"
+echo "  Ctrl+S      - Save"
+echo ""
