@@ -35,3 +35,8 @@ jobs:
       - name: Checkhealth (non-interactive)
         run: |
           nvim --headless "+checkhealth" +qa
+
+      - name: Test keymaps
+        run: |
+          chmod +x scripts/test-keymaps.sh
+          ./scripts/test-keymaps.sh
