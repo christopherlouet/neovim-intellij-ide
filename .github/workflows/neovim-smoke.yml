@@ -22,7 +22,7 @@ jobs:
         run: |
           set -e
           # Download and install Neovim AppImage
-          curl -fsSL https://github.com/neovim/neovim/releases/latest/download/nvim.appimage -o /tmp/nvim.appimage
+          curl -fsSL https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage -o /tmp/nvim.appimage
           chmod +x /tmp/nvim.appimage
           sudo mkdir -p /usr/local/bin
           sudo mv /tmp/nvim.appimage /usr/local/bin/nvim

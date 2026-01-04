@@ -130,7 +130,7 @@ if is_debian_like; then
   else
     # Debian: use AppImage for a recent Neovim (repos can lag)
     run "sudo apt install -y fuse3 || true"
-    run 'NVIM_TMP="$(mktemp -d)" && curl -fsSL https://github.com/neovim/neovim/releases/latest/download/nvim.appimage -o "$NVIM_TMP/nvim.appimage" && chmod +x "$NVIM_TMP/nvim.appimage" && sudo install -m 0755 "$NVIM_TMP/nvim.appimage" "'"${PREFIX}"'/nvim" && rm -rf "$NVIM_TMP"'
+    run 'NVIM_TMP="$(mktemp -d)" && curl -fsSL https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage -o "$NVIM_TMP/nvim.appimage" && chmod +x "$NVIM_TMP/nvim.appimage" && sudo install -m 0755 "$NVIM_TMP/nvim.appimage" "'"${PREFIX}"'/nvim" && rm -rf "$NVIM_TMP"'
   fi
 elif is_fedora_like; then
   run "sudo dnf -y install neovim"
