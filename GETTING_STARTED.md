@@ -172,8 +172,11 @@ Ce script nettoie proprement le cache et les fichiers temporaires sans toucher �
 | `<leader>ff` | Rechercher des fichiers |
 | `<leader>fg` | Rechercher dans le contenu (grep) |
 | `<leader>fb` | Rechercher dans les buffers ouverts |
-| `<leader>fh` | Rechercher dans l'historique |
+| `<leader>fh` | Fichiers récents |
 | `<leader>fw` | Rechercher le mot sous le curseur |
+| `<leader>fp` | Rechercher dans les projets |
+| `<leader>fs` | Symboles du fichier |
+| `<leader>fS` | Symboles du workspace |
 
 ---
 
@@ -188,7 +191,7 @@ Ce script nettoie proprement le cache et les fichiers temporaires sans toucher �
 | `gi` | Aller à l'implémentation |
 | `gr` ou `gR` | Trouver les références |
 | `K` | Afficher la documentation (hover) |
-| `<C-k>` | Signature de la fonction |
+| `<C-k>` | Signature de la fonction (normal et insert) |
 | `[d` | Diagnostic précédent |
 | `]d` | Diagnostic suivant |
 
@@ -197,7 +200,7 @@ Ce script nettoie proprement le cache et les fichiers temporaires sans toucher �
 | Raccourci | Action |
 |-----------|--------|
 | `<leader>cs` | Afficher les symboles (Trouble) |
-| `<leader>o` | Toggle Aerial (outline/structure) |
+| `<leader>so` | Toggle Aerial (outline/structure) - désactivé |
 
 ### Diagnostics (Trouble)
 
@@ -226,12 +229,11 @@ Ce script nettoie proprement le cache et les fichiers temporaires sans toucher �
 
 ### Refactoring avancé
 
+> ⚠️ **Note** : Le plugin refactoring est temporairement désactivé (dépendance treesitter).
+
 | Raccourci (visuel) | Action |
 |-----------|--------|
-| `<leader>re` | Extract function |
-| `<leader>rf` | Extract function to file |
-| `<leader>rv` | Extract variable |
-| `<leader>ri` | Inline variable |
+| `<leader>re` | Refactor menu (désactivé) |
 
 ### Paires et surround
 
@@ -299,7 +301,7 @@ Pour formater manuellement :
 | `<leader>hu` | Undo stage hunk |
 | `<leader>hp` | Preview le hunk |
 | `<leader>hb` | Blame line |
-| `<leader>hd` | Diff |
+| `<leader>hd` | Diff this |
 
 ### Neogit (interface Git complète)
 
@@ -318,9 +320,12 @@ Dans Neogit :
 
 ### Diffview
 
-```vim
-<leader>gd    " Ouvrir Diffview
-```
+| Raccourci | Action |
+|-----------|--------|
+| `<leader>gd` | Ouvrir Diffview |
+| `<leader>gH` | File history |
+| `<leader>gD` | Git diff (fugitive) |
+| `<leader>gB` | Git blame (full) |
 
 ---
 
@@ -343,13 +348,14 @@ Dans Neogit :
 
 ### Tests (Neotest)
 
+> ⚠️ **Note** : Le plugin neotest est temporairement désactivé (dépendance treesitter).
+
 | Raccourci | Action |
 |-----------|--------|
-| `<leader>tt` | Run nearest test |
-| `<leader>tf` | Run file tests |
-| `<leader>ta` | Run all tests |
-| `<leader>ts` | Toggle summary |
-| `<leader>to` | Toggle output panel |
+| `<leader>tt` | Test file (désactivé) |
+| `<leader>tT` | Test nearest (désactivé) |
+| `<leader>to` | Test output (désactivé) |
+| `<leader>ts` | Test summary (désactivé) |
 
 ---
 
@@ -436,10 +442,12 @@ Les guides d'indentation sont affichés automatiquement pour faciliter la lectur
 
 ### Aerial (vue structure)
 
+> ⚠️ **Note** : Le plugin aerial est temporairement désactivé (dépendance treesitter).
+
 Aerial affiche la structure du fichier (fonctions, classes, etc.) :
 
 ```vim
-<leader>o    " Toggle Aerial
+<leader>so    " Toggle Aerial (désactivé)
 ```
 
 ### Recherche de projets
@@ -447,7 +455,7 @@ Aerial affiche la structure du fichier (fonctions, classes, etc.) :
 Le plugin `project.nvim` détecte automatiquement les projets (Git, package.json, etc.).
 
 ```vim
-<leader>fp    " Rechercher dans les projets récents
+<leader>fp    " Rechercher dans les projets récents (Telescope)
 ```
 
 ---
