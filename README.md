@@ -3,7 +3,7 @@
 
 # Neovim IntelliJ‑like IDE
 
-Configuration **Neovim ≥ 0.11** clé en main visant à reproduire l’expérience **IntelliJ Ultimate** :
+Configuration **Neovim ≥ 0.11** clé en main visant à reproduire l'expérience **IntelliJ Ultimate** :
 navigation rapide, refactorings, debug, tests, Docker, LSP complet et workflow DevOps-friendly.
 
 Ce setup est pensé pour :
@@ -14,7 +14,23 @@ Ce setup est pensé pour :
 
 ---
 
-## 🧩 Fonctionnalités globales
+## 🚀 Démarrage rapide
+
+```bash
+# Installation
+chmod +x install.sh
+./install.sh
+
+# Vérification
+./healthcheck.sh
+
+# Guide utilisateur complet
+Voir GETTING_STARTED.md
+```
+
+---
+
+## 🧩 Fonctionnalités
 
 ### Interface & UX (IDE-like)
 
@@ -31,8 +47,8 @@ Ce setup est pensé pour :
 
 - Recherche fichiers / texte / symboles (**Telescope**)
 - Détection automatique de projet (**project.nvim**)
-- Outline / Structure view (**Aerial**)
 - Diagnostics centralisés (**Trouble**)
+- Navigation rapide (**Leap**, **Harpoon**)
 
 ### LSP & Intelligence de code
 
@@ -52,17 +68,27 @@ Ce setup est pensé pour :
 - Gitsigns (blame, hunks)
 - Neogit (UI Git)
 - Diffview
+- Octo (PRs/Issues GitHub)
+- Advanced Git Search
 
 ### Run / Debug / Tests
 
 - Terminal intégré (**ToggleTerm**)
 - Runner de tâches (**Overseer**)
 - Debug (**nvim-dap**, dap-ui, dap-virtual-text)
-- Tests (**neotest**)
 
-### Docker
+### Docker & DevOps
 
-- Intégration Docker via Telescope (**telescope-docker.nvim**)
+- Intégration Docker via Telescope
+- **Kubernetes** : kubectl.nvim, yamlls avec schémas
+- **Terraform** : terraformls, formatage auto
+- **Ansible** : ansiblels, syntax highlighting
+- **Helm** : helm_ls, support charts
+
+### Base de données
+
+- **SQL** : sqlls, vim-dadbod-ui (interface graphique)
+- Support : PostgreSQL, MySQL, SQLite, etc.
 
 ### AI
 
@@ -78,7 +104,6 @@ Ce setup est pensé pour :
 - Lint : ESLint
 - Format : Prettier
 - Frameworks : React / Vue / Next.js
-- Tests : Jest / Vitest (via neotest)
 
 ### HTML / CSS / Tailwind
 
@@ -105,23 +130,10 @@ Ce setup est pensé pour :
 ### Docker
 
 - LSP : `dockerls`
-- Exploration : containers / images / volumes (telescope-docker)
-
-### DevOps / Infrastructure
-
-- **Kubernetes** : kubectl.nvim, yamlls avec schémas
-- **Terraform** : terraformls, formatage auto
-- **Ansible** : ansiblels, syntax highlighting
-- **Helm** : helm_ls, support charts
-
-### Database
-
-- **SQL** : sqlls, vim-dadbod-ui (interface graphique)
-- Support : PostgreSQL, MySQL, SQLite, etc.
+- Exploration : containers / images / volumes
 
 ### Lua
 
-- Treesitter
 - Configuration Neovim native
 
 > D'autres langages peuvent être ajoutés facilement via `:Mason`.
@@ -142,6 +154,8 @@ Options utiles :
 ./install.sh --prefix=$HOME/.local/bin
 ```
 
+> ⚠️ **Important :** Lance les scripts avec **bash** (`./install.sh` ou `bash install.sh`), pas avec `sh`.
+
 ---
 
 ## 🔁 Migration IntelliJ → Neovim
@@ -150,7 +164,7 @@ Script fourni : **`intellij-migrate.sh`**
 
 Fonctionnalités :
 
-- Keymaps proches d’IntelliJ (Ctrl+P, Ctrl+Shift+F, Alt+Enter, etc.)
+- Keymaps proches d'IntelliJ (Ctrl+P, Ctrl+Shift+F, Alt+Enter, etc.)
 - Cheatsheet généré dans `~/.config/nvim/INTELLIJ_MIGRATION.md`
 - Activation / désactivation simple
 
@@ -161,9 +175,20 @@ Fonctionnalités :
 
 ---
 
-## 🧪 Vérification & maintenance
+## 📚 Documentation
 
-> 📖 **Guide complet** : Voir [TROUBLESHOOTING.md](TROUBLESHOOTING.md) pour le guide de dépannage détaillé
+- **[GETTING_STARTED.md](GETTING_STARTED.md)** - Guide complet pour démarrer avec Neovim
+- **[KEYMAPS_AUDIT.md](KEYMAPS_AUDIT.md)** - Audit complet des keymaps disponibles
+- **[TESTING.md](TESTING.md)** - Documentation des tests automatisés
+- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Guide de dépannage détaillé
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Guide pour contribuer au projet
+- **[ROADMAP.md](ROADMAP.md)** - Plan d'évolution du projet
+- **[VERSIONING.md](VERSIONING.md)** - Politique de versioning
+- **[CHANGELOG.md](CHANGELOG.md)** - Historique des versions
+
+---
+
+## 🧪 Tests et qualité
 
 ### Vérification de santé
 
@@ -172,8 +197,6 @@ Fonctionnalités :
 ```
 
 ### Nettoyage du cache
-
-Si vous rencontrez des problèmes de cache ou de plugins :
 
 ```bash
 # Nettoyage standard (cache uniquement)
@@ -189,53 +212,32 @@ Si vous rencontrez des problèmes de cache ou de plugins :
 ./clean-restart.sh --deep -y
 ```
 
-Le script `clean-restart.sh` permet de :
+### Tests automatisés
 
-- Nettoyer le cache Neovim (`~/.cache/nvim`)
-- Supprimer les fichiers temporaires (swap, shada)
-- En mode `--deep` : réinstaller tous les plugins proprement
-- **Garantie** : votre configuration (`~/.config/nvim`) n'est jamais touchée
-- Backups automatiques avant nettoyage profond
+Le projet inclut des tests automatisés pour garantir la qualité :
 
-Commandes utiles :
+- ✅ Tests des keymaps (< 1 seconde)
+- ✅ Smoke tests Neovim
+- ✅ Pre-commit hooks (shellcheck, stylua, luacheck)
+- ✅ GitHub Actions CI
 
-```vim
-:Lazy sync
-:Mason
-:MasonInstallDevTools
-```
+Voir [TESTING.md](TESTING.md) pour plus de détails.
 
 ---
 
-## 🩺 `:checkhealth` — interpréter les warnings
-
-Certains warnings sont **optionnels** et ne bloquent pas le fonctionnement “IDE”.
-
-- **cargo / ruby / php / composer / julia** : requis uniquement si tu veux installer des outils Mason liés à ces écosystèmes.
-- **VCS `hg` (Mercurial)** : uniquement nécessaire si tu utilises Mercurial. Tu peux l’ignorer ou installer `mercurial`.
-- **Luarocks / hererocks** : désactivé par défaut (`rocks.enabled=false`) pour éviter des dépendances Lua externes.
-- **Providers Neovim** :
-  - Node provider : `npm i -g neovim`
-  - Python provider : `python3 -m pip install --user -U pynvim`
-
-Le script `install.sh` installe désormais automatiquement `pynvim`, `neovim` (npm) et `tree-sitter-cli`.
-
-## 🧯 Dépannage courant
+## 🩺 Dépannage
 
 ### Mason en headless (CI / `nvim --headless "+checkhealth"`)
 
-Mason installe des outils **de façon asynchrone**. En mode headless, Neovim peut quitter avant la fin et afficher :
-`Neovim is exiting while packages are still installing`.
+Mason installe des outils **de façon asynchrone**. En mode headless, Neovim peut quitter avant la fin.
 
-✅ Ce dépôt évite désormais tout auto-install en headless (ensure_installed vide), et recommande d’installer les outils **à la demande** :
+✅ Ce dépôt évite désormais tout auto-install en headless (ensure_installed vide), et recommande d'installer les outils **à la demande** :
 
 ```vim
 :MasonInstallDevTools
 ```
 
 ### `:checkhealth lazy` — erreur `lazy-rocks/hererocks/bin/luarocks` not installed
-
-Même si aucun plugin ne requiert `luarocks`, un ancien répertoire `lazy-rocks/` peut déclencher un checkhealth en erreur.
 
 ✅ Fix :
 
@@ -245,17 +247,15 @@ rm -rf ~/.local/share/nvim/lazy-rocks
 
 Le script `install.sh` le fait automatiquement.
 
-### Installation
+### Installation des providers Node très lente
 
-> ⚠️ **Important :** lance les scripts avec **bash** (`./install.sh` ou `bash install.sh`), pas avec `sh`.
- des providers Node (neovim / tree-sitter-cli) très lente
-L’étape `npm i -g neovim tree-sitter-cli` peut être lente (réseau, proxy, registry).
+L'étape `npm i -g neovim tree-sitter-cli` peut être lente (réseau, proxy, registry).
 
 Le script `install.sh` :
 
-- tente l’installation avec **retry**
+- tente l'installation avec **retry**
 - écrit un log dans `~/.nvim-install-logs/npm-providers.log`
-- est **non-bloquant** : en cas d’échec, l’installation continue.
+- est **non-bloquant** : en cas d'échec, l'installation continue.
 
 Tu peux aussi accélérer via variables :
 
@@ -267,38 +267,32 @@ export NPM_CONFIG_PROGRESS=false
 
 ### `[none-ls/null-ls] failed to load builtin eslint`
 
-`none-ls` fournit nativement **eslint_d** (plus rapide et plus courant en local).  
-Le setup utilise donc `eslint_d` et non `eslint`.
+`none-ls` fournit nativement **eslint_d** (plus rapide et plus courant en local).
 
 ✅ Fix :
 
 ```vim
 :MasonInstall eslint_d
-```
-
-ou
-
-```vim
+# ou
 :MasonInstallDevTools
 ```
 
 ### Warning `vim.lsp.buf_get_clients()` deprecated (project.nvim)
 
-`project.nvim` utilise encore `vim.lsp.buf_get_clients()` (supprimé en Neovim 0.12).  
+`project.nvim` utilise encore `vim.lsp.buf_get_clients()` (supprimé en Neovim 0.12).
+
 Un patch de compatibilité est appliqué automatiquement via :
 
 - `nvim/after/plugin/project-nvim-compat.lua`
 - et une surcharge dans `lua/config/options.lua`
 
-Ce patch n’affecte pas le comportement (il redirige vers `vim.lsp.get_clients()`), et pourra être retiré quand `project.nvim` aura été mis à jour.
+Ce patch n'affecte pas le comportement (il redirige vers `vim.lsp.get_clients()`), et pourra être retiré quand `project.nvim` aura été mis à jour.
 
-### Installation
+### Lazy / Treesitter "figée" en mode headless
 
-> ⚠️ **Important :** lance les scripts avec **bash** (`./install.sh` ou `bash install.sh`), pas avec `sh`.
- Lazy / Treesitter “figée”
-En mode headless, Neovim est souvent **silencieux** et donne l’impression d’être bloqué, surtout quand Treesitter compile les parsers.
+En mode headless, Neovim est souvent **silencieux** et donne l'impression d'être bloqué, surtout quand Treesitter compile les parsers.
 
-La procédure la plus fiable est de **séparer** l’installation :
+La procédure la plus fiable est de **séparer** l'installation :
 
 ```bash
 nvim --headless "+Lazy! sync" +qa
@@ -308,19 +302,8 @@ nvim --headless "+TSUpdate" +qa
 Le script `install.sh` fait maintenant exactement ça, avec :
 
 - logs dans `~/.nvim-install-logs/`
-- timeouts configurables :
-  - `--lazy-timeout=600`
-  - `--ts-timeout=900`
-- mode verbeux :
-
-```bash
-./install.sh --verbose
-```
-
-Si ça bloque encore, ouvre les logs :
-
-- `~/.nvim-install-logs/lazy-sync.log`
-- `~/.nvim-install-logs/treesitter-update.log`
+- timeouts configurables : `--lazy-timeout=600`, `--ts-timeout=900`
+- mode verbeux : `./install.sh --verbose`
 
 ### Mason ne trouve pas prettier / markdownlint
 
@@ -342,19 +325,16 @@ Si vide, relancer Neovim depuis un shell avec NVM actif.
 - `neotest` - Framework de tests
 - `refactoring.nvim` - Outils de refactoring
 
-**Alternative** : La coloration syntaxique native de Neovim fonctionne parfaitement pour tous les langages supportés (JS, TS, Lua, HTML, CSS, etc.).
+**Alternative** : La coloration syntaxique native de Neovim fonctionne parfaitement pour tous les langages supportés.
 
-**Pour réactiver Treesitter et ses dépendances** (optionnel) :
+**Pour réactiver Treesitter** (optionnel) :
 
-1. Éditer les fichiers suivants et changer `enabled = false` en `enabled = true` :
+1. Éditer les fichiers et changer `enabled = false` en `enabled = true` :
    - `nvim/lua/plugins/treesitter.lua`
    - `nvim/lua/plugins/tests.lua`
    - `nvim/lua/plugins/telescope.lua`
-2. Décommenter la configuration treesitter dans `treesitter.lua`
-3. Exécuter `:Lazy sync`
-4. Installer les parsers : `:TSUpdate`
-
-**Note** : Neovim 0.12+ inclut Treesitter nativement, cette configuration sera mise à jour quand la version stable sortira.
+2. Exécuter `:Lazy sync`
+3. Installer les parsers : `:TSUpdate`
 
 ---
 
@@ -368,28 +348,28 @@ Un backup complet est toujours effectué avant suppression.
 
 ---
 
----
-
 ## ✅ CI (GitHub Actions)
 
-Un workflow est fourni dans `.github/workflows/install-check.yml` pour vérifier que:
+Un workflow est fourni dans `.github/workflows/install-check.yml` pour vérifier que :
 
 - l'installation fonctionne sur **Ubuntu** (install réel + `healthcheck.sh`)
 - les chemins d'installation sont valides en **Debian** et **Fedora** (dry-run)
+- les keymaps sont correctement définis
+- Neovim démarre correctement
 
-## ❓ FAQ (Questions fréquentes)
+---
+
+## ❓ FAQ
 
 ### ❔ Pourquoi Neovim ≥ 0.11 est requis ?
 
 Cette configuration utilise :
 
-- l’API LSP native `vim.lsp.config`
+- l'API LSP native `vim.lsp.config`
 - des améliorations Lazy.nvim récentes
 - une gestion moderne des diagnostics et capacités
 
 Les versions antérieures (0.9 / 0.10) ne sont **pas supportées**.
-
----
 
 ### ❔ Puis-je utiliser cette config sans Node.js ?
 
@@ -409,8 +389,6 @@ Mais tu perds :
 
 Pour une expérience IntelliJ-like complète, **Node.js est recommandé**.
 
----
-
 ### ❔ Pourquoi utiliser Mason plutôt que des installs système ?
 
 Mason permet :
@@ -420,9 +398,7 @@ Mason permet :
 - aucun impact sur le système
 - une config reproductible (CI / onboarding)
 
-C’est l’équivalent de ce qu’IntelliJ fait en interne.
-
----
+C'est l'équivalent de ce qu'IntelliJ fait en interne.
 
 ### ❔ Est-ce que cette config est adaptée à une équipe ?
 
@@ -432,12 +408,10 @@ Avantages :
 
 - versionnable (Git)
 - reproductible
-- profils (`js`, `devops`, `full`)
 - documentation intégrée
+- tests automatisés
 
-C’est parfaitement adapté à un usage **équipe / entreprise**.
-
----
+C'est parfaitement adapté à un usage **équipe / entreprise**.
 
 ### ❔ Comment ajouter un nouveau langage ?
 
@@ -455,19 +429,14 @@ vim.lsp.config("mon_langage_ls", {})
 
 3. (Optionnel) Ajouter formatter/linter via `none-ls`.
 
----
-
 ### ❔ Puis-je désactiver certaines fonctionnalités ?
 
 Oui.
 
 Plusieurs options :
 
-- utiliser un profil (`NVIM_PROFILE=js`)
 - commenter un plugin dans `lua/plugins/`
 - supprimer le layer IntelliJ (`./intellij-migrate.sh --remove`)
-
----
 
 ### ❔ Pourquoi Lazy.nvim plutôt que Packer ?
 
@@ -478,9 +447,7 @@ Lazy.nvim apporte :
 - gestion native des dépendances
 - diagnostics clairs
 
-C’est aujourd’hui le **standard de facto**.
-
----
+C'est aujourd'hui le **standard de facto**.
 
 ### ❔ Cette config remplace-t-elle IntelliJ ?
 
@@ -494,8 +461,6 @@ Différences :
 
 Beaucoup utilisent les deux selon le contexte.
 
----
-
 ### ❔ Où sont stockés mes paramètres ?
 
 - Config : `~/.config/nvim`
@@ -506,120 +471,20 @@ Les scripts fournis font toujours un **backup** avant modification.
 
 ---
 
----
-
-## 🏗️ Architecture du setup Neovim IDE
-
-### Vue conceptuelle
-
-```text
-┌──────────────┐
-│   Neovim     │
-│  (core 0.11) │
-└──────┬───────┘
-       │
-       ▼
-┌────────────────────┐
-│     Lazy.nvim      │  ← Plugin manager (load order, events)
-└──────┬─────────────┘
-       │
-       ▼
-┌────────────────────┐
-│     Plugins        │
-│ UI / Git / Debug   │
-│ Tests / Docker     │
-└──────┬─────────────┘
-       │
-       ▼
-┌────────────────────┐
-│      Mason         │  ← Installer outils externes
-└──────┬─────────────┘
-       │
-       ▼
-┌────────────────────┐
-│  LSP / Tools       │
-│ ts_ls, eslint,     │
-│ prettier, dap…     │
-└──────┬─────────────┘
-       │
-       ▼
-┌────────────────────┐
-│ none-ls / DAP /    │
-│ neotest / Overseer│
-└────────────────────┘
-```
-
-### Mermaid
-
-```mermaid
-graph TD
-  N[Neovim Core] --> L[Lazy.nvim]
-  L --> P[Plugins UI / Git / Debug]
-  P --> M[Mason]
-  M --> T[LSP / Tools]
-  T --> E[Execution: Format / Debug / Tests]
-```
-
----
-
-## 🎛️ Profils d’utilisation
-
-> 🔧 **Profil par défaut : `Full`**  
-> Ce dépôt est configuré et testé en priorité avec le profil **Full IDE**.
-> Les profils `js` et `devops` sont des variantes optionnelles pour alléger certaines fonctionnalités. (JS / DevOps / Full IDE)
-
-Le setup supporte **plusieurs profils** activables par variable d’environnement ou flag.
-Cela permet d’alléger Neovim selon ton contexte.
-
-### Profils disponibles
-
-| Profil | Description |
-|------|-------------|
-| `js` | JavaScript / TypeScript uniquement |
-| `devops` | Docker / Bash / YAML / Git |
-| `full` | IDE complet (par défaut) |
-
-### Activation par variable d’environnement
-
-```bash
-NVIM_PROFILE=js nvim
-NVIM_PROFILE=devops nvim
-NVIM_PROFILE=full nvim
-```
-
-### Logique interne
-
-- Les plugins sont groupés par domaine (js.lua, devops.lua, core.lua)
-- `init.lua` charge dynamiquement selon `vim.env.NVIM_PROFILE`
-- Par défaut : `full`
-
-*(Exemple de structure)*
-
-```text
-lua/plugins/
-├── core.lua
-├── js.lua
-├── devops.lua
-└── full.lua
-```
-
----
-
----
-
-## 🧭 Parcours recommandé
-
-1. Installer le profil **JS only**
-2. Activer la migration IntelliJ
-3. Ajouter progressivement DevOps
-4. Passer en **Full IDE**
-
----
-
 ## 💡 Philosophie
 
-> Neovim comme IntelliJ…  
+> Neovim comme IntelliJ…
 > mais scriptable, portable, versionnable, et sous ton contrôle.
+
+---
+
+## 🤔 Pourquoi ce repo plutôt que LazyVim/AstroNvim ?
+
+- **Approche "IntelliJ-like"** : keymaps, UX et plugins choisis pour une expérience IDE cohérente (pas un framework généraliste).
+- **Indus-friendly** : scripts d'installation, CI (lint + smoke test), fichiers OSS standards, SemVer.
+- **Lisible** : plugins organisés par domaine (`lua/plugins/*`), conventions simples, configuration explicite.
+- **Opt-in** : les features avancées (ex: AI) restent modulaires et évitent le lock-in.
+- **Tests automatisés** : Validation continue des keymaps et de la configuration.
 
 ---
 
@@ -649,43 +514,18 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ```
 
-## Notes
+---
 
-- `eslint_d` n’est pas garanti comme builtin core de `none-ls` selon les versions : ce repo le charge via `none-ls-extras` (fallback vers `eslint` si nécessaire).
+## 📦 Notes techniques
+
+- `eslint_d` est chargé via `none-ls-extras` (fallback vers `eslint` si nécessaire).
 - `nvim/lazy-lock.json` est fourni comme point de départ : exécute `:Lazy sync` puis commit le lock pour figer les versions.
+- Les keymaps sont validés automatiquement via CI (`scripts/test-keymaps.sh`)
 
 ---
 
-## 📌 Versioning & Roadmap
+## 📌 Ressources
 
-- Politique de versioning : voir `VERSIONING.md`
-- Plan d’évolution : voir `ROADMAP.md`
-
----
-
-## 🩺 Diagnostic rapide
-
-Après installation, tu peux lancer :
-
-```vim
-:IdeDoctor
-```
-
-Cela vérifie notamment : version Neovim, binaires essentiels (`git`, `rg`, `fd`, `node`, `python3`), présence de Mason/none-ls.
-
----
-
-## 🤔 Pourquoi ce repo plutôt que LazyVim/AstroNvim ?
-
-- **Approche “IntelliJ-like”** : keymaps, UX et plugins choisis pour une expérience IDE cohérente (pas un framework généraliste).
-- **Indus-friendly** : scripts d’installation, CI (lint + smoke test), fichiers OSS standards, SemVer.
-- **Lisible** : plugins organisés par domaine (`lua/plugins/*`), conventions simples, configuration explicite.
-- **Opt-in** : les features avancées (ex: AI) restent modulaires et évitent le lock-in.
-
----
-
-## 📦 Releases
-
-- Notes de release prêtes : `releases/v1.0.0.md`
-- Roadmap : `ROADMAP.md`
-- Versioning : `VERSIONING.md`
+- **Versioning** : `VERSIONING.md`
+- **Roadmap** : `ROADMAP.md`
+- **Releases** : Voir `releases/v1.0.0.md`

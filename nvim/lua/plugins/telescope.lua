@@ -25,6 +25,8 @@ return {
       vim.keymap.set("n", "<leader>ff", b.find_files, { desc = "Find files" })
       vim.keymap.set("n", "<leader>fg", b.live_grep, { desc = "Grep" })
       vim.keymap.set("n", "<leader>fb", b.buffers, { desc = "Buffers" })
+      vim.keymap.set("n", "<leader>fh", b.oldfiles, { desc = "Recent files" })
+      vim.keymap.set("n", "<leader>fw", b.grep_string, { desc = "Find word under cursor" })
       vim.keymap.set("n", "<leader>fs", b.lsp_document_symbols, { desc = "Symbols (file)" })
       vim.keymap.set("n", "<leader>fS", b.lsp_workspace_symbols, { desc = "Symbols (workspace)" })
     end,
@@ -41,6 +43,8 @@ return {
     "ahmedkhalf/project.nvim",
     config = function()
       require("project_nvim").setup({})
+      require("telescope").load_extension("projects")
+      vim.keymap.set("n", "<leader>fp", "<cmd>Telescope projects<cr>", { desc = "Projects" })
     end,
   },
 

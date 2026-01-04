@@ -32,6 +32,13 @@ repos:
         files: \.lua$
         exclude: ^nvim/lazy-lock\.json$
 
+      - id: neovim-keymap-test
+        name: Neovim keymap validation
+        entry: bash -c 'if command -v nvim &> /dev/null && [ -f scripts/test-keymaps.sh ]; then ./scripts/test-keymaps.sh; else echo "⚠️  Neovim not found or test script missing, skipping keymap test..."; exit 0; fi'
+        language: system
+        files: ^nvim/lua/plugins/.*\.lua$
+        pass_filenames: false
+
   # Markdown linting
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.39.0
