@@ -9,6 +9,6 @@ return {
         keymaps = { toggle = { normal = "<leader>cc", terminal = "<leader>cc" } },
       })
       vim.keymap.set("n", "<leader>cc", "<cmd>ClaudeCode<cr>", { desc = "Claude Code" })
-    end
+    end,
   },
 }

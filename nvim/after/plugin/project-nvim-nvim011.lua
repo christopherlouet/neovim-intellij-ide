@@ -2,7 +2,9 @@
 -- Safe no-op if internals change.
 pcall(function()
   local project = require("project_nvim.project")
-  if type(project) ~= "table" then return end
+  if type(project) ~= "table" then
+    return
+  end
   -- Some versions keep a local helper; we can only patch exported functions.
   -- project.update_lsp_clients may exist; if so, rewrite it to use vim.lsp.get_clients.
   if type(project.update_lsp_clients) == "function" and vim.lsp.get_clients then

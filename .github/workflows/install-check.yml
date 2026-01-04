@@ -3,23 +3,28 @@ name: Install / Healthcheck
 on:
   pull_request:
   push:
-    branches: [ main, master ]
+    branches: [main, master, lazyvim]
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   ubuntu-full:
     name: Ubuntu (full install + healthcheck)
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Make scripts executable
         run: |
-          chmod +x install.sh uninstall.sh healthcheck.sh intellij-migrate.sh || true
+          chmod +x install.sh uninstall.sh healthcheck.sh intellij-migrate.sh clean-restart.sh || true
 
       - name: Install (Ubuntu)
         env:
-          # Avoid interactive prompts
           DEBIAN_FRONTEND: noninteractive
         run: |
           ./install.sh --yes --prefix=$HOME/.local/bin
@@ -31,6 +36,7 @@ jobs:
   debian-dryrun:
     name: Debian (dry-run)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     container:
       image: debian:stable-slim
     steps:
@@ -39,7 +45,8 @@ jobs:
           apt-get update
           apt-get install -y git curl ca-certificates tar gzip sudo bash
 
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Dry-run install script (Debian path)
         env:
@@ -51,6 +58,7 @@ jobs:
   fedora-dryrun:
     name: Fedora (dry-run)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     container:
       image: fedora:latest
     steps:
@@ -59,7 +67,8 @@ jobs:
           dnf -y update
           dnf -y install git curl ca-certificates tar gzip sudo bash
 
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Dry-run install script (Fedora path)
         run: |

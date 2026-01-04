@@ -1,6 +1,7 @@
 ## Description
 
 ## Checklist
+
 - [ ] `./install.sh --dry-run --yes`
 - [ ] `./healthcheck.sh`
 - [ ] CI verte

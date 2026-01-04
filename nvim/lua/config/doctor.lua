@@ -19,8 +19,12 @@ end
 local function version_ge(major, minor)
   -- nvim 0.11+ exposes vim.version()
   local v = vim.version and vim.version() or { major = 0, minor = 0, patch = 0 }
-  if v.major > major then return true end
-  if v.major < major then return false end
+  if v.major > major then
+    return true
+  end
+  if v.major < major then
+    return false
+  end
   return (v.minor or 0) >= minor
 end
 
@@ -37,12 +41,20 @@ function M.run()
   -- Core CLI tools
   local required = { "git", "rg", "fd" }
   for _, b in ipairs(required) do
-    if has(b) then ok("Found: " .. b) else warn("Missing: " .. b .. " (recommended)") end
+    if has(b) then
+      ok("Found: " .. b)
+    else
+      warn("Missing: " .. b .. " (recommended)")
+    end
   end
 
   local optional = { "node", "npm", "pnpm", "python3" }
   for _, b in ipairs(optional) do
-    if has(b) then ok("Found: " .. b) else warn("Missing: " .. b .. " (optional / language-specific)") end
+    if has(b) then
+      ok("Found: " .. b)
+    else
+      warn("Missing: " .. b .. " (optional / language-specific)")
+    end
   end
 
   -- Mason
@@ -72,7 +84,9 @@ function M.run()
 end
 
 function M.setup()
-  vim.api.nvim_create_user_command("IdeDoctor", function() M.run() end, {
+  vim.api.nvim_create_user_command("IdeDoctor", function()
+    M.run()
+  end, {
     desc = "Check common dependencies and configuration health",
   })
 end

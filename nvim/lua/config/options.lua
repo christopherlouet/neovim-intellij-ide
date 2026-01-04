@@ -20,12 +20,36 @@ vim.opt.splitbelow = true
 vim.opt.cursorline = true
 vim.opt.wrap = false
 vim.opt.scrolloff = 8
+vim.opt.sidescrolloff = 8
+vim.opt.cmdheight = 1
+vim.opt.shortmess:append("sWcC") -- Suppress startup messages
+
+-- Performance
+vim.opt.lazyredraw = false
+vim.opt.redrawtime = 1500
+vim.opt.timeoutlen = 300 -- Faster which-key
+
+-- Recherche
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.hlsearch = false
+
+-- UI améliorée
+vim.opt.conceallevel = 0 -- Voir JSON/Markdown brut
+vim.opt.pumheight = 10 -- Popup menu plus petit
+vim.opt.showmode = false -- Mode déjà dans lualine
+vim.opt.splitkeep = "screen" -- Keep screen position on split
 
 -- Undo / backups
 vim.opt.undofile = true
+vim.opt.undolevels = 10000
 
 -- Sessions: keep localoptions so filetype/highlighting restore correctly
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
+-- Enable filetype detection, indentation and syntax highlighting
+vim.cmd("filetype plugin indent on")
+vim.cmd("syntax enable")
 
 -- Ensure Node/npm installed via NVM are visible to Neovim (especially when launched from GUI)
 do

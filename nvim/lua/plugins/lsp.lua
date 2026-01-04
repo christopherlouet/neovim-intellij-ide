@@ -24,6 +24,11 @@ return {
           "eslint",
           "dockerls",
           "bashls",
+          "yamlls",
+          "terraformls",
+          "ansiblels",
+          "helm_ls",
+          "sqlls",
         },
         automatic_installation = true,
       })
@@ -75,6 +80,26 @@ return {
         eslint = {},
         dockerls = {},
         bashls = {},
+        yamlls = {
+          settings = {
+            yaml = {
+              schemas = {
+                kubernetes = "*.yaml",
+                ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
+                ["http://json.schemastore.org/ansible-playbook"] = "playbook.yml",
+                ["http://json.schemastore.org/docker-compose"] = "docker-compose*.yml",
+              },
+              format = { enable = true },
+              validate = true,
+              hover = true,
+              completion = true,
+            },
+          },
+        },
+        terraformls = {},
+        ansiblels = {},
+        helm_ls = {},
+        sqlls = {},
       }
 
       for server, config in pairs(servers) do

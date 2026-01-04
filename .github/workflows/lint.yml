@@ -3,39 +3,39 @@ name: Lint
 on:
   pull_request:
   push:
-    branches: [ main, master ]
+    branches: [main, master, lazyvim]
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  lint:
+  pre-commit:
     runs-on: ubuntu-latest
+    name: Pre-commit hooks
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install deps
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y shellcheck lua5.1 luarocks
-          sudo luarocks install luacheck
-          curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-          sudo apt-get install -y nodejs
-          sudo npm i -g markdownlint-cli2
-
-      - name: Shellcheck
-        run: |
-          shellcheck -x install.sh uninstall.sh healthcheck.sh intellij-migrate.sh || exit 1
-
-      - name: Markdownlint
-        run: |
-          markdownlint-cli2 "**/*.md" "#node_modules"
-
-      - name: Stylua (format check)
-        uses: JohnnyMorganz/stylua-action@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          version: latest
-          args: --check nvim/lua
+          fetch-depth: 0
 
-      - name: Luacheck
-        run: |
-          luacheck nvim/lua
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Cache pre-commit environments
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            pre-commit-${{ runner.os }}-
+
+      - name: Run pre-commit
+        run: pre-commit run --all-files --show-diff-on-failure --color=always
