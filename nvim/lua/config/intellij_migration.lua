@@ -4,7 +4,9 @@
 local map = vim.keymap.set
 local b = function()
   local ok, builtin = pcall(require, "telescope.builtin")
-  if ok then return builtin end
+  if ok then
+    return builtin
+  end
   return nil
 end
 
@@ -14,15 +16,24 @@ map("n", "<C-q>", "<cmd>q<cr>", { desc = "IntelliJ: Quit" })
 
 -- Navigation / search (Ctrl+P, Ctrl+Shift+F, Ctrl+E)
 map("n", "<C-p>", function()
-  local builtin = b(); if builtin then builtin.find_files() end
+  local builtin = b()
+  if builtin then
+    builtin.find_files()
+  end
 end, { desc = "IntelliJ: Go to File (Ctrl+P)" })
 
 map("n", "<C-S-f>", function()
-  local builtin = b(); if builtin then builtin.live_grep() end
+  local builtin = b()
+  if builtin then
+    builtin.live_grep()
+  end
 end, { desc = "IntelliJ: Find in Files (Ctrl+Shift+F)" })
 
 map("n", "<C-e>", function()
-  local builtin = b(); if builtin then builtin.buffers() end
+  local builtin = b()
+  if builtin then
+    builtin.buffers()
+  end
 end, { desc = "IntelliJ: Recent files (buffers)" })
 
 -- Go to definition (Ctrl+B)
@@ -54,5 +65,7 @@ map("n", "<M-F12>", "<cmd>ToggleTerm<cr>", { desc = "IntelliJ: Terminal (Alt+F12
 map("n", "<S-F10>", "<cmd>OverseerRun<cr>", { desc = "IntelliJ: Run (Shift+F10)" })
 map("n", "<S-F9>", function()
   local ok, dap = pcall(require, "dap")
-  if ok then dap.continue() end
+  if ok then
+    dap.continue()
+  end
 end, { desc = "IntelliJ: Debug (Shift+F9)" })

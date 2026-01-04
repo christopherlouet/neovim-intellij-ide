@@ -1,0 +1,100 @@
+# Pre-commit configuration for Neovim IntelliJ-like IDE
+# Install: pip install pre-commit
+# Setup: pre-commit install
+# Run manually: pre-commit run --all-files
+
+repos:
+  # Shell scripts linting
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.10.0
+    hooks:
+      - id: shellcheck
+        name: Shellcheck
+        args: [-x]
+        files: \.(sh|bash)$
+
+  # Lua formatting
+  - repo: https://github.com/JohnnyMorganz/StyLua
+    rev: v0.20.0
+    hooks:
+      - id: stylua
+        name: StyLua formatting
+        args: []
+        files: \.lua$
+
+  # Lua linting - using system luacheck if available
+  - repo: local
+    hooks:
+      - id: luacheck
+        name: Luacheck (optional)
+        entry: bash -c 'if command -v luacheck &> /dev/null; then luacheck --globals vim --no-max-line-length "$@"; else echo "luacheck not found, skipping..."; exit 0; fi' --
+        language: system
+        files: \.lua$
+        exclude: ^nvim/lazy-lock\.json$
+
+  # Markdown linting
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.39.0
+    hooks:
+      - id: markdownlint
+        name: Markdownlint
+        args: [--fix]
+        files: \.md$
+
+  # YAML linting
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        name: YAML Lint
+        args: [-c, .yamllint.yaml]
+        files: \.(yaml|yml)$
+
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        name: Trim trailing whitespace
+        exclude: \.md$
+      - id: end-of-file-fixer
+        name: Fix end of files
+      - id: check-yaml
+        name: Check YAML syntax
+      - id: check-added-large-files
+        name: Check for large files
+        args: [--maxkb=500]
+      - id: check-merge-conflict
+        name: Check for merge conflicts
+      - id: check-executables-have-shebangs
+        name: Check executables have shebangs
+      - id: mixed-line-ending
+        name: Check mixed line endings
+        args: [--fix=lf]
+
+  # Commit message linting (conventional commits)
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.1.0
+    hooks:
+      - id: conventional-pre-commit
+        name: Conventional commits
+        stages: [commit-msg]
+        args: [--force-scope]
+
+# Configuration for specific hooks
+default_language_version:
+  python: python3
+
+# Skip some hooks on certain files
+exclude: |
+  (?x)^(
+    nvim/lazy-lock\.json|
+    node_modules/|
+    \.git/
+  )$
+
+# Fail fast: stop on first failure
+fail_fast: false
+
+# Minimum pre-commit version
+minimum_pre_commit_version: '3.0.0'
