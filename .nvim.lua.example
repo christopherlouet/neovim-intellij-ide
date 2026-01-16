@@ -1,0 +1,98 @@
+-- .nvim.lua.example - Exemple de configuration projet
+-- Copiez ce fichier en .nvim.lua et adaptez-le à votre projet
+--
+-- IMPORTANT: Ce fichier sera exécuté uniquement si vous faites
+-- confiance au projet avec :ProjectConfig trust
+
+-- =============================================================
+-- OPTIONS LOCALES
+-- =============================================================
+
+-- Indentation (décommentez selon vos besoins)
+-- vim.opt_local.tabstop = 4
+-- vim.opt_local.shiftwidth = 4
+-- vim.opt_local.expandtab = true  -- spaces (false = tabs)
+
+-- =============================================================
+-- VARIABLES DE PROJET
+-- =============================================================
+
+vim.g.project_name = "my-project"
+-- vim.g.project_type = "python"  -- ou "javascript", "go", etc.
+
+-- =============================================================
+-- KEYMAPS PROJET
+-- =============================================================
+
+-- Tests
+vim.keymap.set("n", "<leader>pt", function()
+  -- Adaptez cette commande à votre projet
+  -- vim.cmd("!npm test")
+  -- vim.cmd("!pytest")
+  -- vim.cmd("!go test ./...")
+  vim.notify("Configure test command in .nvim.lua", vim.log.levels.INFO)
+end, { desc = "[P]roject [T]est" })
+
+-- Build
+vim.keymap.set("n", "<leader>pb", function()
+  -- vim.cmd("!npm run build")
+  -- vim.cmd("!make")
+  -- vim.cmd("!go build")
+  vim.notify("Configure build command in .nvim.lua", vim.log.levels.INFO)
+end, { desc = "[P]roject [B]uild" })
+
+-- Dev server
+vim.keymap.set("n", "<leader>pd", function()
+  -- vim.cmd("!npm run dev")
+  -- vim.cmd("!python manage.py runserver")
+  vim.notify("Configure dev command in .nvim.lua", vim.log.levels.INFO)
+end, { desc = "[P]roject [D]ev" })
+
+-- =============================================================
+-- ENVIRONNEMENT
+-- =============================================================
+
+-- Python virtualenv
+-- local venv = vim.fn.getcwd() .. "/.venv"
+-- if vim.fn.isdirectory(venv) == 1 then
+--   vim.env.VIRTUAL_ENV = venv
+--   vim.env.PATH = venv .. "/bin:" .. vim.env.PATH
+-- end
+
+-- Node.js local binaries
+-- local node_modules = vim.fn.getcwd() .. "/node_modules/.bin"
+-- if vim.fn.isdirectory(node_modules) == 1 then
+--   vim.env.PATH = node_modules .. ":" .. vim.env.PATH
+-- end
+
+-- =============================================================
+-- LSP SPÉCIFIQUE
+-- =============================================================
+
+-- Configuration LSP pour ce projet
+-- vim.g.lsp_project_settings = {
+--   pyright = {
+--     python = { pythonPath = ".venv/bin/python" },
+--   },
+-- }
+
+-- =============================================================
+-- AUTOCOMMANDS PROJET
+-- =============================================================
+
+-- local project_augroup = vim.api.nvim_create_augroup("ProjectAutocmds", { clear = true })
+
+-- Exemple: Formater automatiquement les fichiers Python
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   group = project_augroup,
+--   pattern = "*.py",
+--   callback = function()
+--     vim.lsp.buf.format({ async = false })
+--   end,
+-- })
+
+-- =============================================================
+-- NOTIFICATION DE CHARGEMENT
+-- =============================================================
+
+vim.notify("Project config loaded: " .. vim.g.project_name, vim.log.levels.INFO)
