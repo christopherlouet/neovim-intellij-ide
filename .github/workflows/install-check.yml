@@ -49,12 +49,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     container:
-      image: debian:stable
+      image: debian:bookworm
     steps:
       - name: Install base deps for checkout
         run: |
           apt-get update
-          apt-get install -y git curl ca-certificates tar gzip sudo bash procps file
+          apt-get install -y git curl ca-certificates tar gzip sudo bash procps file libfuse3-3 fuse3
 
       - name: Create non-root user
         run: |
