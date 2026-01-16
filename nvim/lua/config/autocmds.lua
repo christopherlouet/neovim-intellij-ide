@@ -15,16 +15,3 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
   desc = "Highlight on yank",
 })
-
--- Force native syntax highlighting for Lua files (disable treesitter)
-vim.api.nvim_create_autocmd("FileType", {
-  group = augroup,
-  pattern = "lua",
-  callback = function()
-    -- Désactiver treesitter pour ce buffer
-    pcall(vim.treesitter.stop)
-    -- Forcer la syntaxe native
-    vim.bo.syntax = "lua"
-  end,
-  desc = "Use native Lua syntax instead of treesitter",
-})
