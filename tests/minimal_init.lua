@@ -5,8 +5,14 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- Get project root from this file's location
+local this_file = debug.getinfo(1, "S").source:sub(2) -- Remove @ prefix
+local project_root = vim.fn.fnamemodify(this_file, ":p:h:h")
+
+-- Store project root globally for tests to access
+vim.g.test_project_root = project_root
+
 -- Add project root to runtimepath
-local project_root = vim.fn.fnamemodify(vim.fn.expand("<sfile>:p:h"), ":h")
 vim.opt.rtp:prepend(project_root)
 vim.opt.rtp:prepend(project_root .. "/nvim")
 

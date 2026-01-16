@@ -4,8 +4,14 @@
 local M = {}
 
 -- Get project root directory
+-- Uses the global set by minimal_init.lua, or falls back to debug.getinfo
 function M.get_project_root()
-  return vim.fn.fnamemodify(vim.fn.expand("<sfile>:p:h"), ":h")
+  if vim.g.test_project_root then
+    return vim.g.test_project_root
+  end
+  -- Fallback: calculate from this file's location
+  local this_file = debug.getinfo(1, "S").source:sub(2)
+  return vim.fn.fnamemodify(this_file, ":p:h:h")
 end
 
 -- Get path to nvim config directory
