@@ -1,0 +1,72 @@
+name: Lua Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lua-tests:
+    name: Run Lua Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Neovim
+        run: |
+          curl -fsSL https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage -o /tmp/nvim.appimage
+          chmod +x /tmp/nvim.appimage
+          sudo mkdir -p /usr/local/bin
+          sudo mv /tmp/nvim.appimage /usr/local/bin/nvim
+          nvim --version
+
+      - name: Install plenary.nvim
+        run: |
+          mkdir -p ~/.local/share/nvim/lazy
+          git clone --depth 1 https://github.com/nvim-lua/plenary.nvim ~/.local/share/nvim/lazy/plenary.nvim
+
+      - name: Run Lua tests
+        run: |
+          chmod +x scripts/run-tests.sh
+          ./scripts/run-tests.sh
+
+  benchmark:
+    name: Startup Time Benchmark
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Neovim
+        run: |
+          curl -fsSL https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage -o /tmp/nvim.appimage
+          chmod +x /tmp/nvim.appimage
+          sudo mkdir -p /usr/local/bin
+          sudo mv /tmp/nvim.appimage /usr/local/bin/nvim
+
+      - name: Measure startup time (baseline - no plugins)
+        run: |
+          echo "=== Baseline startup (no config) ==="
+          nvim --startuptime /tmp/startup-baseline.log --headless +qa
+          tail -1 /tmp/startup-baseline.log
+
+      - name: Measure startup time (with config)
+        run: |
+          echo "=== Startup with config ==="
+          # Copy config to standard location
+          mkdir -p ~/.config
+          cp -r nvim ~/.config/nvim
+          # Run startup benchmark (will fail on missing plugins, but measures load time)
+          timeout 30s nvim --startuptime /tmp/startup-config.log --headless +qa 2>/dev/null || true
+          if [ -f /tmp/startup-config.log ]; then
+            echo "Startup time breakdown:"
+            tail -20 /tmp/startup-config.log
+          fi
