@@ -4,7 +4,41 @@ Ce projet utilise plusieurs niveaux de tests pour garantir la qualité et la coh
 
 ## 🧪 Tests disponibles
 
-### 1. Test des Keymaps (scripts/test-keymaps.sh)
+### 1. Tests Unitaires Lua (scripts/run-tests.sh)
+
+**Objectif** : Tester les modules de configuration Lua avec plenary.nvim
+
+**Type** : Tests unitaires avec assertions
+
+**Couverture** :
+
+- `config/options` : Options Neovim (line numbers, indentation, etc.)
+- `config/keymaps` : Keymaps globaux (save, quit, navigation, etc.)
+
+**Exécution locale** :
+
+```bash
+# Tous les tests
+./scripts/run-tests.sh
+
+# Test spécifique
+./scripts/run-tests.sh config/options
+./scripts/run-tests.sh config/keymaps
+```
+
+**Prérequis** :
+
+- Neovim >= 0.11
+- plenary.nvim installé (`~/.local/share/nvim/lazy/plenary.nvim`)
+
+**Intégration CI** :
+
+- ✅ GitHub Actions (workflow `lua-tests.yml`)
+- ✅ Benchmark temps de démarrage
+
+---
+
+### 2. Test des Keymaps (scripts/test-keymaps.sh)
 
 **Objectif** : Vérifier que tous les keymaps critiques sont définis dans les fichiers de configuration.
 
@@ -33,7 +67,7 @@ Ce projet utilise plusieurs niveaux de tests pour garantir la qualité et la coh
 
 ---
 
-### 2. Neovim Smoke Test (GitHub Actions)
+### 3. Neovim Smoke Test (GitHub Actions)
 
 **Objectif** : Vérifier que Neovim démarre correctement avec la configuration.
 
@@ -54,7 +88,7 @@ Ce projet utilise plusieurs niveaux de tests pour garantir la qualité et la coh
 
 ---
 
-### 3. Pre-commit Hooks
+### 4. Pre-commit Hooks
 
 **Configuration** : `.pre-commit-config.yaml`
 
@@ -94,13 +128,15 @@ pre-commit run neovim-keymap-test
 
 | Test | Local | Pre-commit | CI | Durée |
 |------|-------|------------|----|----|
+| **Lua unit tests** | ✅ | ❌ | ✅ | ~2s |
 | Keymaps | ✅ | ✅ | ✅ | ~32ms |
 | Smoke test | ⚠️ | ❌ | ✅ | ~30s |
+| Benchmark | ⚠️ | ❌ | ✅ | ~5s |
 | Shellcheck | ✅ | ✅ | ✅ | ~100ms |
 | StyLua | ✅ | ✅ | ✅ | ~200ms |
 | Luacheck | ✅ | ✅ | ✅ | ~500ms |
 
-⚠️ Smoke test local nécessite Neovim installé
+⚠️ Tests locaux nécessitent Neovim et plenary.nvim installés
 
 ---
 
@@ -240,8 +276,9 @@ shellcheck scripts/*.sh
 
 ### Idées futures
 
+- [x] ~~Tests unitaires Lua~~ ✅ Implémenté
+- [x] ~~Tests de performance (temps de démarrage)~~ ✅ Benchmark CI
 - [ ] Tests d'intégration (vérifier que les keymaps fonctionnent réellement)
-- [ ] Tests de performance (temps de démarrage de Neovim)
 - [ ] Tests de régression visuelle (capture d'écran)
 - [ ] Coverage des keymaps (% de keymaps documentés vs définis)
 - [ ] Tests de plugins (vérifier que tous les plugins se chargent)
