@@ -1,77 +1,47 @@
--- Configuration pour la coloration syntaxique native
--- Utilise les capacités natives de Neovim sans treesitter
+-- Fallback syntax support for languages not fully covered by treesitter
+-- Primary highlighting is handled by nvim-treesitter (see treesitter.lua)
 
 return {
-  -- Amélioration de la coloration syntaxique pour plusieurs langages
+  -- vim-polyglot: fallback for niche filetypes not in treesitter
   {
     "sheerun/vim-polyglot",
-    lazy = false,
+    event = "VeryLazy",
     init = function()
-      -- Désactiver les langages gérés par treesitter
+      -- Disable languages fully handled by treesitter
       vim.g.polyglot_disabled = {
         "lua",
         "javascript",
         "typescript",
         "tsx",
+        "jsx",
         "html",
         "css",
         "json",
+        "jsonc",
         "bash",
         "markdown",
         "prisma",
+        "yaml",
+        "toml",
+        "dockerfile",
+        "graphql",
       }
 
-      -- Configuration pour TypeScript/JavaScript
+      -- Keep JSDoc/Flow support for edge cases
       vim.g.javascript_plugin_jsdoc = 1
       vim.g.javascript_plugin_flow = 1
-
-      -- Configuration pour JSX/TSX
       vim.g.jsx_ext_required = 0
     end,
   },
 
-  -- Support amélioré pour les fichiers de config courants
-  {
-    "cespare/vim-toml",
-    ft = "toml",
-  },
+  -- NOTE: The following ft-based plugins are kept as fallbacks.
+  -- Treesitter handles most of these, but these provide additional
+  -- features like better indentation or filetype detection.
 
-  {
-    "stephpy/vim-yaml",
-    ft = { "yaml", "yml" },
-  },
-
-  -- Support pour Prisma
-  {
-    "prisma/vim-prisma",
-    ft = "prisma",
-  },
-
-  -- Support pour Docker
-  {
-    "ekalinin/Dockerfile.vim",
-    ft = { "dockerfile", "Dockerfile" },
-  },
-
-  -- Support pour GraphQL
-  {
-    "jparise/vim-graphql",
-    ft = { "graphql", "gql" },
-  },
-
-  -- Note: Lua utilise la coloration native de Neovim (excellente qualité)
-  -- vim-polyglot est désactivé pour Lua pour éviter les conflits
-
-  -- Support pour les fichiers .env
+  -- Support pour les fichiers .env (no treesitter parser)
   {
     "tpope/vim-dotenv",
     ft = { "env", "dotenv" },
-  },
-
-  -- Support amélioré pour JSON avec commentaires
-  {
-    "neoclide/jsonc.vim",
-    ft = { "json", "jsonc" },
   },
 
   -- Support pour les templates (handlebars, etc.)
