@@ -35,7 +35,7 @@ return {
     end,
   },
 
-  -- Neovim 0.11 native LSP configuration
+  -- LSP configuration (Neovim 0.11+ native or lspconfig fallback)
   {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -108,7 +108,11 @@ return {
       for server, config in pairs(servers) do
         config.capabilities = capabilities
         config.on_attach = on_attach
-        vim.lsp.config(server, config)
+        if vim.lsp.config then
+          vim.lsp.config(server, config)
+        else
+          require("lspconfig")[server].setup(config)
+        end
       end
     end,
   },
