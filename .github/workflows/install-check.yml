@@ -68,11 +68,24 @@ jobs:
         run: |
           chmod +x install.sh uninstall.sh healthcheck.sh intellij-migrate.sh clean-restart.sh || true
 
-      - name: Install (Debian)
+      - name: Install Neovim from tarball (container-friendly)
+        run: |
+          # AppImage requires FUSE which is problematic in containers
+          # Use tarball instead for CI testing
+          NVIM_VERSION=$(curl -sL https://api.github.com/repos/neovim/neovim/releases/latest | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+          curl -fsSL "https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-x86_64.tar.gz" -o /tmp/nvim.tar.gz
+          tar -xzf /tmp/nvim.tar.gz -C /tmp
+          sudo install -m 0755 /tmp/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
+          sudo cp -r /tmp/nvim-linux-x86_64/lib/nvim /usr/local/lib/
+          sudo cp -r /tmp/nvim-linux-x86_64/share/nvim /usr/local/share/
+          rm -rf /tmp/nvim*
+
+      - name: Install (Debian) - skip Neovim install step
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
           # Run as testuser to simulate real user installation
+          # Neovim already installed above, script will detect it
           chown -R testuser:testuser .
           su testuser -c "./install.sh --yes --prefix=/home/testuser/.local/bin"
 
