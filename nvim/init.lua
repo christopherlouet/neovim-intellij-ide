@@ -13,3 +13,6 @@ require("config.options")
 require("config.keymaps")
 require("config.autocmds")
 require("config.doctor")
+
+-- Project-specific configuration (loads .nvim.lua from project root)
+require("config.project").setup()
