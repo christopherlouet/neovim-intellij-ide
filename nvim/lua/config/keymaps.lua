@@ -101,15 +101,6 @@ map("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
 map("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line diagnostics" })
 
--- ============================
--- LSP "IntelliJ-like"
--- ============================
-map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename (Refactor)" })
-map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
-map("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
-map("n", "gR", vim.lsp.buf.references, { desc = "Find references" })
-map("n", "K", vim.lsp.buf.hover, { desc = "Quick doc" })
-
 -- IncRename (preview live)
 map("n", "<leader>rN", function()
   return ":IncRename " .. vim.fn.expand("<cword>")
