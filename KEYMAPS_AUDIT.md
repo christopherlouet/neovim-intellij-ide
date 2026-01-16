@@ -48,8 +48,8 @@
 - ✅ `gr` - Find references (**AJOUTÉ** - alias de gR)
 - ✅ `gR` - Find references (déjà existant)
 - ✅ `K` - Hover documentation (déjà existant)
-- ✅ `<C-k>` - Signature help normal (**AJOUTÉ**)
-- ✅ `<C-k>` - Signature help insert (**AJOUTÉ**)
+- ✅ `gK` - Signature help normal (changé depuis `<C-k>` pour éviter conflit navigation)
+- ✅ `<C-S-k>` - Signature help insert (changé depuis `<C-k>` pour éviter conflit navigation)
 - ✅ `<leader>rn` - Rename (déjà existant)
 - ✅ `<leader>ca` - Code action (déjà existant)
 
@@ -232,7 +232,7 @@ nvim
 :map <leader>fp
 :map ]c
 :map <leader>hs
-:map <C-k>
+:map gK
 :map <leader>db
 :map <leader>dc
 
