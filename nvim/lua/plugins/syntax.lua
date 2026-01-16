@@ -7,8 +7,19 @@ return {
     "sheerun/vim-polyglot",
     lazy = false,
     init = function()
-      -- Désactiver les langages qui ont déjà un bon support natif dans Neovim
-      vim.g.polyglot_disabled = { "lua" }
+      -- Désactiver les langages gérés par treesitter
+      vim.g.polyglot_disabled = {
+        "lua",
+        "javascript",
+        "typescript",
+        "tsx",
+        "html",
+        "css",
+        "json",
+        "bash",
+        "markdown",
+        "prisma",
+      }
 
       -- Configuration pour TypeScript/JavaScript
       vim.g.javascript_plugin_jsdoc = 1
