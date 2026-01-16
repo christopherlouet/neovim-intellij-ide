@@ -2,7 +2,7 @@
 # Test rapide des keymaps - vérification statique des fichiers de configuration
 # Usage: ./scripts/test-keymaps.sh
 
-set -o pipefail
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
@@ -20,16 +20,13 @@ check_keymap() {
   local keymap="$2"
   local desc="$3"
 
-  # Échapper les caractères spéciaux pour grep
-  local escaped_keymap
-  escaped_keymap=$(printf '%s\n' "$keymap" | sed 's/[[\.*^$/]/\\&/g')
-
-  if grep -qF "\"$keymap\"" "$file" 2>/dev/null; then
+  # Use grep -F for fixed string matching (no regex escaping needed)
+  if grep -qF "$keymap" "$file" 2>/dev/null; then
     echo "✓ $keymap - $desc"
-    ((PASS++))
+    ((PASS++)) || true
   else
     echo "✗ $keymap - $desc NOT FOUND in $(basename "$file")"
-    ((FAIL++))
+    ((FAIL++)) || true
   fi
 }
 
