@@ -4,6 +4,42 @@ Ce projet suit un changelog simple, orienté releases GitHub.
 
 ## Unreleased
 
+## v2.1.0 (2026-01-16)
+
+### 🚀 Nouvelles Fonctionnalités
+
+- **Feat**: Tests Lua avec plenary.nvim - Framework de tests unitaires pour la configuration (#7)
+- **Feat**: Système de profils utilisateur - Activation/désactivation de groupes de plugins (minimal, full, devops) (#8)
+- **Feat**: Configuration spécifique par projet - `.nvim/config.lua` pour personnaliser par projet (#9)
+- **Feat**: Makefile multi-OS complet - Installation, tests et maintenance simplifiés (#10)
+- **Feat**: Tests d'installation multi-OS - Ubuntu, Debian, Fedora et macOS officiellement testés (#11)
+
+### 🔧 Améliorations
+
+- **Feat**: Filetype-specific settings pour Python, JS, TS, Markdown, JSON
+- **Refactor**: Simplification de la configuration eslint_d dans none-ls
+- **Fix**: Résolution du conflit `<C-k>`, utilisation de `gK` pour signature help
+- **Fix**: Gestion des environnements Python PEP 668 (Debian 12+)
+- **Fix**: Détection de version Neovim pour éviter réinstallation si >= 0.11
+
+### 🔒 Sécurité & Qualité
+
+- **Fix**: Améliorations de sécurité et qualité des scripts shell (#6)
+- **Feat**: Validation automatique des keymaps en CI
+- **Feat**: Tests d'options et keymaps avec plenary.nvim
+
+### 📚 Documentation
+
+- **Docs**: Mise à jour README avec matrice de compatibilité des plateformes
+- **Docs**: Ajout de badges dynamiques CI et version Neovim
+
+### 📊 Statistiques
+
+- 5 PRs mergées (#7, #8, #9, #10, #11)
+- 4 plateformes officiellement testées (Ubuntu, Debian, Fedora, macOS)
+- Tests Lua automatisés (keymaps, options)
+- 3 systèmes de configuration (base, profils, projet)
+
 ## v2.0.1 (2026-01-04)
 
 ### 🎯 Keymaps & Testing
