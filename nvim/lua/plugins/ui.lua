@@ -27,7 +27,6 @@ return {
 
   -- Icons
   { "nvim-tree/nvim-web-devicons", lazy = true },
-  { "nvim-neotest/nvim-nio" },
   {
     "echasnovski/mini.icons",
     lazy = true,
