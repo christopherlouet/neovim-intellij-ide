@@ -11,8 +11,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ubuntu-full:
-    name: Ubuntu (full install + healthcheck)
+  # ============================================================================
+  # Ubuntu - Full installation test
+  # ============================================================================
+  ubuntu:
+    name: Ubuntu (full install)
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -33,44 +36,154 @@ jobs:
         run: |
           ./healthcheck.sh
 
-  debian-dryrun:
-    name: Debian (dry-run)
+      - name: Verify Neovim starts correctly
+        run: |
+          nvim --version
+          nvim --headless "+checkhealth" +qa || true
+
+  # ============================================================================
+  # Debian - Full installation test in container
+  # ============================================================================
+  debian:
+    name: Debian (full install)
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     container:
-      image: debian:stable-slim
+      image: debian:stable
     steps:
       - name: Install base deps for checkout
         run: |
           apt-get update
-          apt-get install -y git curl ca-certificates tar gzip sudo bash
+          apt-get install -y git curl ca-certificates tar gzip sudo bash procps file
+
+      - name: Create non-root user
+        run: |
+          useradd -m -s /bin/bash testuser
+          echo "testuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Dry-run install script (Debian path)
+      - name: Make scripts executable
+        run: |
+          chmod +x install.sh uninstall.sh healthcheck.sh intellij-migrate.sh clean-restart.sh || true
+
+      - name: Install (Debian)
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
-          chmod +x install.sh
-          ./install.sh --dry-run --yes --prefix=/usr/local/bin
+          # Run as testuser to simulate real user installation
+          chown -R testuser:testuser .
+          su testuser -c "./install.sh --yes --prefix=/home/testuser/.local/bin"
 
-  fedora-dryrun:
-    name: Fedora (dry-run)
+      - name: Healthcheck (headless)
+        run: |
+          su testuser -c "./healthcheck.sh"
+
+      - name: Verify Neovim starts correctly
+        run: |
+          su testuser -c "/home/testuser/.local/bin/nvim --version"
+
+  # ============================================================================
+  # Fedora - Full installation test in container
+  # ============================================================================
+  fedora:
+    name: Fedora (full install)
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     container:
       image: fedora:latest
     steps:
       - name: Install base deps for checkout
         run: |
           dnf -y update
-          dnf -y install git curl ca-certificates tar gzip sudo bash
+          dnf -y install git curl ca-certificates tar gzip sudo bash procps-ng file
+
+      - name: Create non-root user
+        run: |
+          useradd -m -s /bin/bash testuser
+          echo "testuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Dry-run install script (Fedora path)
+      - name: Make scripts executable
         run: |
-          chmod +x install.sh
-          ./install.sh --dry-run --yes --prefix=/usr/local/bin
+          chmod +x install.sh uninstall.sh healthcheck.sh intellij-migrate.sh clean-restart.sh || true
+
+      - name: Install (Fedora)
+        run: |
+          # Run as testuser to simulate real user installation
+          chown -R testuser:testuser .
+          su testuser -c "./install.sh --yes --prefix=/home/testuser/.local/bin"
+
+      - name: Healthcheck (headless)
+        run: |
+          su testuser -c "./healthcheck.sh"
+
+      - name: Verify Neovim starts correctly
+        run: |
+          su testuser -c "nvim --version"
+
+  # ============================================================================
+  # macOS - Full installation test
+  # ============================================================================
+  macos:
+    name: macOS (full install)
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Make scripts executable
+        run: |
+          chmod +x install.sh uninstall.sh healthcheck.sh intellij-migrate.sh clean-restart.sh || true
+
+      - name: Install dependencies via Homebrew
+        run: |
+          brew update
+          brew install neovim node ripgrep fd
+
+      - name: Install NVM and Node
+        run: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          nvm install 20
+          nvm use 20
+          npm install -g pnpm neovim tree-sitter-cli || true
+
+      - name: Deploy Neovim config
+        run: |
+          mkdir -p ~/.config
+          cp -a nvim ~/.config/nvim
+
+      - name: Install plugins
+        run: |
+          nvim --headless "+Lazy! sync" +qa || true
+
+      - name: Healthcheck (headless)
+        run: |
+          nvim --version
+          nvim --headless "+checkhealth" +qa || true
+
+  # ============================================================================
+  # Summary job for branch protection
+  # ============================================================================
+  ci-success:
+    name: CI Success
+    needs: [ubuntu, debian, fedora, macos]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check all jobs passed
+        run: |
+          if [[ "${{ needs.ubuntu.result }}" != "success" ]] || \
+             [[ "${{ needs.debian.result }}" != "success" ]] || \
+             [[ "${{ needs.fedora.result }}" != "success" ]] || \
+             [[ "${{ needs.macos.result }}" != "success" ]]; then
+            echo "One or more jobs failed"
+            exit 1
+          fi
+          echo "All CI jobs passed!"

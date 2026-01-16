@@ -1,5 +1,6 @@
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![Build Status](https://img.shields.io/github/actions/workflow/status/christopherlouet/neovim-intellij-ide/install-check.yml?branch=main&label=CI)
 ![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)
+![Neovim](https://img.shields.io/badge/Neovim-%3E%3D0.11-green?logo=neovim)
 
 # Neovim IntelliJ‑like IDE
 
@@ -345,14 +346,27 @@ Un backup complet est toujours effectué avant suppression.
 
 ---
 
-## ✅ CI (GitHub Actions)
+## ✅ Plateformes supportées
 
-Un workflow est fourni dans `.github/workflows/install-check.yml` pour vérifier que :
+| Plateforme | Status | Installation | Notes |
+|------------|--------|--------------|-------|
+| ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white) | ✅ Tested | `./install.sh` | Via PPA neovim-ppa/unstable |
+| ![Debian](https://img.shields.io/badge/Debian-A81D33?logo=debian&logoColor=white) | ✅ Tested | `./install.sh` | Via AppImage |
+| ![Fedora](https://img.shields.io/badge/Fedora-51A2DA?logo=fedora&logoColor=white) | ✅ Tested | `./install.sh` | Via DNF |
+| ![macOS](https://img.shields.io/badge/macOS-000000?logo=apple&logoColor=white) | ✅ Tested | Homebrew | `brew install neovim` + config |
+| ![Arch](https://img.shields.io/badge/Arch-1793D1?logo=archlinux&logoColor=white) | 🔧 Manual | pacman | Non testé automatiquement |
+| ![Windows](https://img.shields.io/badge/Windows-0078D6?logo=windows&logoColor=white) | 🔧 WSL | WSL2 + Ubuntu | Utiliser le guide Ubuntu |
 
-- l'installation fonctionne sur **Ubuntu** (install réel + `healthcheck.sh`)
-- les chemins d'installation sont valides en **Debian** et **Fedora** (dry-run)
-- les keymaps sont correctement définis
-- Neovim démarre correctement
+### CI / Tests automatisés
+
+Chaque PR et push sur `main` déclenche des tests complets sur :
+
+- **Ubuntu** : Installation complète + healthcheck
+- **Debian** : Installation complète en container
+- **Fedora** : Installation complète en container
+- **macOS** : Installation via Homebrew + config
+
+Voir [`.github/workflows/install-check.yml`](.github/workflows/install-check.yml) pour les détails
 
 ---
 
