@@ -241,6 +241,55 @@ nvim
 
 Mettre à jour `README.md` section correspondante.
 
+## Pre-commit - Référence détaillée
+
+### Hooks configurés
+
+| Hook | Description | Auto-fix |
+|------|-------------|----------|
+| shellcheck | Lint scripts shell | Non |
+| stylua | Format Lua | Oui |
+| luacheck | Lint Lua (optionnel) | Non |
+| markdownlint | Lint/fix Markdown | Oui |
+| yamllint | Lint YAML | Non |
+| conventional-pre-commit | Valide messages commit | Non |
+
+### Fichiers de configuration
+
+- `.pre-commit-config.yaml` - Hooks pre-commit
+- `.stylua.toml` - Format Lua (120 cols, 2 spaces)
+- `.luacheckrc` - Lint Lua (globals: vim)
+- `.markdownlint.yaml` - Lint Markdown
+- `.yamllint.yaml` - Lint YAML
+- `.shellcheckrc` - Lint shell
+
+### Maintenance
+
+```bash
+# Mettre à jour les hooks
+pre-commit autoupdate
+
+# Nettoyer le cache
+pre-commit clean
+
+# Réinstaller
+pre-commit uninstall && pre-commit install
+```
+
+### Dépannage
+
+```bash
+# Hook échoue ? Vérifier manuellement
+shellcheck -x script.sh      # Shell
+stylua --check nvim/lua      # Lua
+luacheck nvim/lua            # Lua lint
+markdownlint *.md            # Markdown
+
+# Auto-fix et re-commit
+stylua nvim/lua && markdownlint --fix *.md
+git add . && git commit -m "style: fix formatting"
+```
+
 ## Ressources
 
 - [Lazy.nvim docs](https://github.com/folke/lazy.nvim)

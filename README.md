@@ -159,6 +159,26 @@ Options utiles :
 
 ---
 
+## ⚙️ Profils
+
+Adaptez la configuration à votre usage avec les **profils** :
+
+| Profil | Description | Cas d'usage |
+|--------|-------------|-------------|
+| `minimal` | Core IDE (LSP, completion) | Édition rapide, SSH |
+| `javascript` | Minimal + JS/TS tooling | Développement frontend |
+| `devops` | Minimal + K8s, Terraform, Docker | Platform engineering |
+| `full` | Tout (défaut) | Configuration complète |
+
+```lua
+-- Dans init.lua, avant le chargement des plugins
+vim.g.nvim_profile = "devops"  -- ou "minimal", "javascript", "full"
+```
+
+Voir **[PROFILES.md](PROFILES.md)** pour plus de détails.
+
+---
+
 ## 🔁 Migration IntelliJ → Neovim
 
 Script fourni : **`intellij-migrate.sh`**
@@ -179,12 +199,12 @@ Fonctionnalités :
 ## 📚 Documentation
 
 - **[GETTING_STARTED.md](GETTING_STARTED.md)** - Guide complet pour démarrer avec Neovim
+- **[PROFILES.md](PROFILES.md)** - Système de profils (minimal, javascript, devops, full)
+- **[PROJECT_CONFIG.md](PROJECT_CONFIG.md)** - Configuration spécifique par projet
 - **[KEYMAPS_AUDIT.md](KEYMAPS_AUDIT.md)** - Audit complet des keymaps disponibles
 - **[TESTING.md](TESTING.md)** - Documentation des tests automatisés
 - **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Guide de dépannage détaillé
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Guide pour contribuer au projet
-- **[ROADMAP.md](ROADMAP.md)** - Plan d'évolution du projet
-- **[VERSIONING.md](VERSIONING.md)** - Politique de versioning
 - **[CHANGELOG.md](CHANGELOG.md)** - Historique des versions
 
 ---
@@ -442,12 +462,12 @@ vim.lsp.config("mon_langage_ls", {})
 
 ### ❔ Puis-je désactiver certaines fonctionnalités ?
 
-Oui.
+Oui, plusieurs options :
 
-Plusieurs options :
-
-- commenter un plugin dans `lua/plugins/`
-- supprimer le layer IntelliJ (`./intellij-migrate.sh --remove`)
+- **Profils** : utiliser `minimal`, `javascript` ou `devops` au lieu de `full` (voir [PROFILES.md](PROFILES.md))
+- **Par projet** : créer `.nvim/config.lua` pour personnaliser (voir [PROJECT_CONFIG.md](PROJECT_CONFIG.md))
+- **Manuellement** : commenter un plugin dans `lua/plugins/`
+- **IntelliJ layer** : `./intellij-migrate.sh --remove`
 
 ### ❔ Pourquoi Lazy.nvim plutôt que Packer ?
 
