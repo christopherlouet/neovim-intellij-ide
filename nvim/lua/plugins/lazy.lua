@@ -25,6 +25,11 @@ require("lazy").setup({
   { import = "plugins.docker" },
   { import = "plugins.tests" },
   { import = "plugins.ai" },
+  { import = "plugins.navigation" },
+  { import = "plugins.database" },
+  { import = "plugins.http" },
+  { import = "plugins.logs" },
+  { import = "plugins.devops" },
 }, {
   ui = { border = "rounded" },
   checker = { enabled = true },
