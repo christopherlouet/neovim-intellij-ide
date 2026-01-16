@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-
 DRY_RUN=0
 AUTO_YES=0
 for arg in "$@"; do
@@ -15,7 +14,7 @@ run() {
   if [ "$DRY_RUN" -eq 1 ]; then
     echo "[dry-run] $*"
   else
-    eval "$@"
+    "$@"
   fi
 }
 
@@ -49,33 +48,40 @@ is_fedora_like() {
 }
 
 say "0) Backup -> $BACKUP_DIR"
-run "mkdir -p "$BACKUP_DIR""
-[ -d "$NVIM_CFG" ] && cp -a "$NVIM_CFG" "$BACKUP_DIR/config.nvim"
-[ -d "$NVIM_DATA" ] && cp -a "$NVIM_DATA" "$BACKUP_DIR/share.nvim"
-[ -d "$NVIM_CACHE" ] && cp -a "$NVIM_CACHE" "$BACKUP_DIR/cache.nvim"
+if [ "$DRY_RUN" -eq 1 ]; then
+  echo "[dry-run] mkdir -p $BACKUP_DIR"
+  [ -d "$NVIM_CFG" ] && echo "[dry-run] cp -a $NVIM_CFG $BACKUP_DIR/config.nvim"
+  [ -d "$NVIM_DATA" ] && echo "[dry-run] cp -a $NVIM_DATA $BACKUP_DIR/share.nvim"
+  [ -d "$NVIM_CACHE" ] && echo "[dry-run] cp -a $NVIM_CACHE $BACKUP_DIR/cache.nvim"
+else
+  mkdir -p "$BACKUP_DIR"
+  [ -d "$NVIM_CFG" ] && cp -a "$NVIM_CFG" "$BACKUP_DIR/config.nvim"
+  [ -d "$NVIM_DATA" ] && cp -a "$NVIM_DATA" "$BACKUP_DIR/share.nvim"
+  [ -d "$NVIM_CACHE" ] && cp -a "$NVIM_CACHE" "$BACKUP_DIR/cache.nvim"
+fi
 
 say "1) Suppression Neovim"
 if is_debian_like; then
   if dpkg -s neovim >/dev/null 2>&1; then
-    run "sudo apt remove -y neovim"
-    run "sudo apt autoremove -y"
+    run sudo apt remove -y neovim
+    run sudo apt autoremove -y
   fi
   # If Debian AppImage was installed:
   if [ -f "${HOME}/.local/bin/nvim" ]; then
-    run "rm -f \"${HOME}/.local/bin/nvim\""
+    run rm -f "${HOME}/.local/bin/nvim"
   fi
   if [ -f /usr/local/bin/nvim ]; then
-    run "sudo rm -f /usr/local/bin/nvim"
+    run sudo rm -f /usr/local/bin/nvim
   fi
 elif is_fedora_like; then
-  run "sudo dnf -y remove neovim"
+  run sudo dnf -y remove neovim
 else
   echo "OS non supporté automatiquement (ID=$OS_ID, LIKE=$OS_LIKE)."
   echo "Suppression manuelle requise."
 fi
 
 say "2) Nettoyage dossiers Neovim"
-run "rm -rf \"$NVIM_CFG\" \"$NVIM_DATA\" \"$NVIM_CACHE\""
+run rm -rf "$NVIM_CFG" "$NVIM_DATA" "$NVIM_CACHE"
 
 say "Terminé ✅"
 echo "Backup conservé: $BACKUP_DIR"
