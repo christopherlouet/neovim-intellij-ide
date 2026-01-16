@@ -27,7 +27,6 @@ return {
 
   -- Icons
   { "nvim-tree/nvim-web-devicons", lazy = true },
-  { "nvim-neotest/nvim-nio" },
   {
     "echasnovski/mini.icons",
     lazy = true,
@@ -87,6 +86,8 @@ return {
       spec = {
         { "<leader>b", group = "buffer" },
         { "<leader>c", group = "code" },
+        { "<leader>d", group = "debug" },
+        { "<leader>D", group = "Docker" },
         { "<leader>f", group = "file/find" },
         { "<leader>g", group = "git" },
         { "<leader>q", group = "quit/session" },

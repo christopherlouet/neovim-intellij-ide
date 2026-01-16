@@ -2,16 +2,20 @@ return {
   {
     "nvim-tree/nvim-tree.lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
+    cmd = { "NvimTreeToggle", "NvimTreeOpen", "NvimTreeFocus", "NvimTreeFindFile" },
+    keys = {
+      { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Explorer" },
+    },
+    init = function()
+      -- Disable netrw early (before it loads)
       vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
-      require("nvim-tree").setup({
-        git = { enable = true },
-        diagnostics = { enable = true },
-        view = { width = 32 },
-      })
-      vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Explorer" })
     end,
+    opts = {
+      git = { enable = true },
+      diagnostics = { enable = true },
+      view = { width = 32 },
+    },
   },
 
   {
@@ -50,7 +54,7 @@ return {
 
   {
     "stevearc/aerial.nvim",
-    enabled = false, -- Désactivé temporairement (dépend de treesitter)
+    enabled = true,
     opts = {},
     config = function()
       require("aerial").setup()

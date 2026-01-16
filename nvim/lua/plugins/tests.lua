@@ -1,7 +1,7 @@
 return {
   {
     "nvim-neotest/neotest",
-    enabled = false, -- Désactivé temporairement (dépend de treesitter)
+    enabled = true,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-neotest/nvim-nio",
@@ -28,7 +28,7 @@ return {
   -- Refactor assist
   {
     "ThePrimeagen/refactoring.nvim",
-    enabled = false, -- Désactivé temporairement (dépend de treesitter)
+    enabled = true,
     dependencies = { "nvim-lua/plenary.nvim", "nvim-neotest/nvim-nio", "nvim-treesitter/nvim-treesitter" },
     config = function()
       require("refactoring").setup({})
