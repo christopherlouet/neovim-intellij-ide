@@ -56,29 +56,18 @@ return {
         }),
       }
 
-      -- eslint_d is not guaranteed to be a core builtin across none-ls versions.
-      -- Prefer none-ls-extras when available; fallback to eslint builtin.
-      do
-        local ok, eslint_d = pcall(require, "none-ls.diagnostics.eslint_d")
-        if ok and eslint_d then
-          table.insert(
-            sources,
-            eslint_d.with({
-              condition = function()
-                return has("eslint_d")
-              end,
-            })
-          )
-        elseif null_ls.builtins.diagnostics.eslint then
-          table.insert(
-            sources,
-            null_ls.builtins.diagnostics.eslint.with({
-              condition = function()
-                return has("eslint")
-              end,
-            })
-          )
-        end
+      -- eslint_d via none-ls-extras (recommended for performance)
+      -- Note: eslint LSP server in lsp.lua serves as native fallback
+      local ok, eslint_d = pcall(require, "none-ls.diagnostics.eslint_d")
+      if ok and eslint_d then
+        table.insert(
+          sources,
+          eslint_d.with({
+            condition = function()
+              return has("eslint_d")
+            end,
+          })
+        )
       end
 
       null_ls.setup({
