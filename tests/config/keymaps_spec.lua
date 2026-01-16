@@ -1,7 +1,10 @@
 -- Tests for config/keymaps.lua
 local assert = require("luassert")
+local helpers = require("tests.helpers")
 
 describe("config.keymaps", function()
+  local keymaps_path
+
   local function get_keymap(mode, lhs)
     local keymaps = vim.api.nvim_get_keymap(mode)
     for _, keymap in ipairs(keymaps) do
@@ -13,6 +16,8 @@ describe("config.keymaps", function()
   end
 
   before_each(function()
+    -- Get the path to keymaps.lua
+    keymaps_path = helpers.get_nvim_config_path() .. "/lua/config/keymaps.lua"
     -- Clear existing keymaps for clean testing
     pcall(vim.keymap.del, "n", "<C-s>")
     pcall(vim.keymap.del, "n", "<leader>w")
@@ -21,13 +26,13 @@ describe("config.keymaps", function()
 
   it("should load without errors", function()
     assert.has_no.errors(function()
-      dofile(vim.fn.fnamemodify(vim.fn.expand("<sfile>:p:h"), ":h:h") .. "/nvim/lua/config/keymaps.lua")
+      dofile(keymaps_path)
     end)
   end)
 
   describe("save keymaps", function()
     before_each(function()
-      dofile(vim.fn.fnamemodify(vim.fn.expand("<sfile>:p:h"), ":h:h") .. "/nvim/lua/config/keymaps.lua")
+      dofile(keymaps_path)
     end)
 
     it("should map Ctrl+S to save in normal mode", function()
@@ -48,7 +53,7 @@ describe("config.keymaps", function()
 
   describe("window navigation", function()
     before_each(function()
-      dofile(vim.fn.fnamemodify(vim.fn.expand("<sfile>:p:h"), ":h:h") .. "/nvim/lua/config/keymaps.lua")
+      dofile(keymaps_path)
     end)
 
     it("should map Ctrl+H to go to left window", function()
@@ -74,7 +79,7 @@ describe("config.keymaps", function()
 
   describe("line movement", function()
     before_each(function()
-      dofile(vim.fn.fnamemodify(vim.fn.expand("<sfile>:p:h"), ":h:h") .. "/nvim/lua/config/keymaps.lua")
+      dofile(keymaps_path)
     end)
 
     it("should map Alt+J to move line down", function()
@@ -90,7 +95,7 @@ describe("config.keymaps", function()
 
   describe("diagnostics", function()
     before_each(function()
-      dofile(vim.fn.fnamemodify(vim.fn.expand("<sfile>:p:h"), ":h:h") .. "/nvim/lua/config/keymaps.lua")
+      dofile(keymaps_path)
     end)
 
     it("should map [d to previous diagnostic", function()
@@ -106,7 +111,7 @@ describe("config.keymaps", function()
 
   describe("clipboard", function()
     before_each(function()
-      dofile(vim.fn.fnamemodify(vim.fn.expand("<sfile>:p:h"), ":h:h") .. "/nvim/lua/config/keymaps.lua")
+      dofile(keymaps_path)
     end)
 
     it("should map <leader>y to yank to system clipboard", function()
