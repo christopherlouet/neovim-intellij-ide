@@ -1,23 +1,14 @@
-# Shellcheck configuration
-# Disable specific checks that are not critical
+# ShellCheck configuration for neovim-intellij-ide
+# https://github.com/koalaman/shellcheck/wiki/Directive
 
-# SC2034 - Variable appears unused (often used in install scripts)
-disable=SC2034
+# Follow sourced files (e.g., /etc/os-release)
+external-sources=true
 
-# SC2154 - Variable is referenced but not assigned (dynamic variables)
-disable=SC2154
+# Shell dialect
+shell=bash
 
-# SC2016 - Expressions don't expand in single quotes (intentional for run functions)
-disable=SC2016
-
-# SC2294 - eval with arrays (necessary for some script patterns)
-disable=SC2294
-
-# SC2027 - Surrounding quotes unquote (complex quoting patterns)
-disable=SC2027
-
-# SC2086 - Double quote to prevent globbing (intentional in some cases)
-disable=SC2086
-
-# SC2015 - A && B || C is not if-then-else (intentional pattern)
-disable=SC2015
+# Disabled checks with justification:
+# SC2034 - Variable appears unused (intentional in some install patterns)
+# SC2015 - A && B || C is not if-then-else (intentional pattern for success/warn messages)
+# SC2016 - Expressions don't expand in single quotes (intentional for run() function)
+disable=SC2034,SC2015,SC2016

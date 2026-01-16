@@ -130,7 +130,30 @@ if is_debian_like; then
   else
     # Debian: use AppImage for a recent Neovim (repos can lag)
     run "sudo apt install -y fuse3 || true"
-    run 'NVIM_TMP="$(mktemp -d)" && curl -fsSL https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage -o "$NVIM_TMP/nvim.appimage" && chmod +x "$NVIM_TMP/nvim.appimage" && sudo install -m 0755 "$NVIM_TMP/nvim.appimage" "'"${PREFIX}"'/nvim" && rm -rf "$NVIM_TMP"'
+    # Download AppImage with SHA256 checksum verification
+    run '
+      set -euo pipefail
+      NVIM_TMP="$(mktemp -d)"
+      NVIM_BASE_URL="https://github.com/neovim/neovim/releases/latest/download"
+      NVIM_APPIMAGE="nvim-linux-x86_64.appimage"
+
+      echo "   -> Downloading Neovim AppImage..."
+      curl -fsSL "${NVIM_BASE_URL}/${NVIM_APPIMAGE}" -o "${NVIM_TMP}/${NVIM_APPIMAGE}"
+      curl -fsSL "${NVIM_BASE_URL}/${NVIM_APPIMAGE}.sha256sum" -o "${NVIM_TMP}/${NVIM_APPIMAGE}.sha256sum"
+
+      echo "   -> Verifying checksum..."
+      cd "${NVIM_TMP}"
+      if sha256sum -c "${NVIM_APPIMAGE}.sha256sum"; then
+        echo "   -> Checksum OK, installing..."
+        chmod +x "${NVIM_APPIMAGE}"
+        sudo install -m 0755 "${NVIM_APPIMAGE}" "'"${PREFIX}"'/nvim"
+      else
+        echo "   [ERROR] Checksum verification failed!"
+        rm -rf "${NVIM_TMP}"
+        exit 1
+      fi
+      rm -rf "${NVIM_TMP}"
+    '
   fi
 elif is_fedora_like; then
   run "sudo dnf -y install neovim"
