@@ -50,7 +50,7 @@ return {
 
   {
     "stevearc/aerial.nvim",
-    enabled = false, -- Désactivé temporairement (dépend de treesitter)
+    enabled = true,
     opts = {},
     config = function()
       require("aerial").setup()
