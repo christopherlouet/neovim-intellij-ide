@@ -95,7 +95,7 @@ jobs:
 
       - name: Verify Neovim starts correctly
         run: |
-          su testuser -c "/home/testuser/.local/bin/nvim --version"
+          su testuser -c "nvim --version"
 
   # ============================================================================
   # Fedora - Full installation test in container
