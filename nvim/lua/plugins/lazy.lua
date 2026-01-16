@@ -11,26 +11,28 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({
-  { import = "plugins.ui" },
-  { import = "plugins.syntax" },
-  { import = "plugins.telescope" },
-  { import = "plugins.treesitter" },
-  { import = "plugins.lsp" },
-  { import = "plugins.completion" },
-  { import = "plugins.formatting" },
-  { import = "plugins.git" },
-  { import = "plugins.terminal" },
-  { import = "plugins.debug" },
-  { import = "plugins.docker" },
-  { import = "plugins.tests" },
-  { import = "plugins.ai" },
-  { import = "plugins.navigation" },
-  { import = "plugins.database" },
-  { import = "plugins.http" },
-  { import = "plugins.logs" },
-  { import = "plugins.devops" },
-}, {
+-- Load profile system
+local profiles = require("profiles")
+local profile_modules = profiles.get_modules()
+
+-- Build plugin imports based on profile
+local plugin_imports = {}
+for _, module in ipairs(profile_modules) do
+  -- Skip lazy.lua itself (it's this file)
+  if module ~= "plugins.lazy" then
+    table.insert(plugin_imports, { import = module })
+  end
+end
+
+-- Show profile info on startup (only in verbose mode)
+if vim.g.nvim_profile_verbose then
+  vim.notify(
+    string.format("Neovim profile: %s (%d modules)", profiles.get_profile(), #profile_modules),
+    vim.log.levels.INFO
+  )
+end
+
+require("lazy").setup(plugin_imports, {
   ui = { border = "rounded" },
   checker = { enabled = true },
   rocks = { enabled = false, hererocks = false },
