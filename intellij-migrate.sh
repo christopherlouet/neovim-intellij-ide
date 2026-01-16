@@ -8,13 +8,16 @@ set -euo pipefail
 # Usage:
 #   ./intellij-migrate.sh
 #   ./intellij-migrate.sh --remove
+#   ./intellij-migrate.sh --dry-run
 
 say() { printf "\n\033[1m%s\033[0m\n" "$*"; }
 
 REMOVE=0
+DRY_RUN=0
 for arg in "$@"; do
   case "$arg" in
     --remove) REMOVE=1 ;;
+    --dry-run) DRY_RUN=1 ;;
   esac
 done
 
@@ -25,14 +28,25 @@ CHEATSHEET="${NVIM_CFG}/INTELLIJ_MIGRATION.md"
 
 if [ "$REMOVE" -eq 1 ]; then
   say "Remove IntelliJ migration layer"
-  rm -f "$TARGET_LUA" "$CHEATSHEET"
-  echo "Removed: $TARGET_LUA"
-  echo "Removed: $CHEATSHEET"
+  if [ "$DRY_RUN" -eq 1 ]; then
+    echo "[dry-run] rm -f $TARGET_LUA $CHEATSHEET"
+  else
+    rm -f "$TARGET_LUA" "$CHEATSHEET"
+    echo "Removed: $TARGET_LUA"
+    echo "Removed: $CHEATSHEET"
+  fi
   echo "Note: config/keymaps.lua keeps a safe pcall(require, ...) line."
   exit 0
 fi
 
 say "Install IntelliJ migration layer into: $TARGET_LUA"
+if [ "$DRY_RUN" -eq 1 ]; then
+  echo "[dry-run] mkdir -p $LUA_DIR"
+  echo "[dry-run] Would create: $TARGET_LUA"
+  echo "[dry-run] Would create: $CHEATSHEET"
+  say "Done (dry-run) ✅"
+  exit 0
+fi
 mkdir -p "$LUA_DIR"
 
 cat > "$TARGET_LUA" <<'LUA'
