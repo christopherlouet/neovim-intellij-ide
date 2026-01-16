@@ -102,8 +102,13 @@ fi
 say "1) Dépendances système"
 if is_debian_like; then
   run "sudo apt update"
-  run "sudo apt install -y git curl unzip zip build-essential ripgrep fd-find xclip wl-clipboard python3 python3-pip ca-certificates software-properties-common"
-  run "python3 -m pip install --user -U pynvim"
+  # Base packages for all Debian-like systems
+  run "sudo apt install -y git curl unzip zip build-essential ripgrep fd-find xclip wl-clipboard python3 python3-pip ca-certificates fuse3"
+  # software-properties-common is only needed on Ubuntu for add-apt-repository
+  if [[ "$OS_ID" == "ubuntu" ]]; then
+    run "sudo apt install -y software-properties-common"
+  fi
+  run "python3 -m pip install --user -U pynvim || true"
   if ! need_cmd fd && need_cmd fdfind; then
     run "mkdir -p \"${HOME}/.local/bin\""
     run "ln -sf \"$(command -v fdfind)\" \"${HOME}/.local/bin/fd\""
