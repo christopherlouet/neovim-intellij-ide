@@ -9,7 +9,6 @@ map("i", "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 map("n", "<leader>qa", "<cmd>qa<cr>", { desc = "Quit all" })
-map("n", "<leader>qq", "<cmd>q<cr>", { desc = "Quit" })
 
 -- ============================
 -- Navigation fenêtres
