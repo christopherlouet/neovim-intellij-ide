@@ -118,6 +118,4 @@ return {
     dependencies = { "neovim/nvim-lspconfig" },
     opts = { highlight = true },
   },
-
-  { "prisma/vim-prisma", ft = "prisma" },
 }
