@@ -53,7 +53,7 @@ check_keymap "$PROJECT_ROOT/nvim/lua/plugins/git.lua" "<leader>hs" "Stage hunk (
 echo ""
 echo "Checking LSP keymaps..."
 check_keymap "$PROJECT_ROOT/nvim/lua/plugins/lsp.lua" "gr" "References (NEW)"
-check_keymap "$PROJECT_ROOT/nvim/lua/plugins/lsp.lua" "<C-k>" "Signature help (NEW)"
+check_keymap "$PROJECT_ROOT/nvim/lua/plugins/lsp.lua" "gK" "Signature help (changed from <C-k>)"
 
 echo ""
 echo "Checking debug keymaps..."

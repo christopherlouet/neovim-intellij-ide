@@ -315,26 +315,23 @@ Si vide, relancer Neovim depuis un shell avec NVM actif.
 
 ### Treesitter et plugins dépendants
 
-**Note** : Treesitter et certains plugins qui en dépendent sont actuellement **désactivés** dans cette configuration pour éviter les problèmes de compatibilité.
+**Note** : Treesitter et les plugins qui en dépendent sont **actifs** dans cette configuration.
 
-**Plugins désactivés** :
+**Plugins actifs** :
 
 - `nvim-treesitter` - Coloration syntaxique avancée
-- `nvim-ts-autotag` - Auto-fermeture des balises HTML
+- `nvim-ts-autotag` - Auto-fermeture des balises HTML/JSX
 - `aerial.nvim` - Vue structure/outline
 - `neotest` - Framework de tests
 - `refactoring.nvim` - Outils de refactoring
 
-**Alternative** : La coloration syntaxique native de Neovim fonctionne parfaitement pour tous les langages supportés.
+**Parsers installés automatiquement** : lua, javascript, typescript, tsx, html, css, json, bash, markdown, prisma
 
-**Pour réactiver Treesitter** (optionnel) :
+**Pour ajouter des parsers** :
 
-1. Éditer les fichiers et changer `enabled = false` en `enabled = true` :
-   - `nvim/lua/plugins/treesitter.lua`
-   - `nvim/lua/plugins/tests.lua`
-   - `nvim/lua/plugins/telescope.lua`
-2. Exécuter `:Lazy sync`
-3. Installer les parsers : `:TSUpdate`
+```vim
+:TSInstall <langage>
+```
 
 ---
 
