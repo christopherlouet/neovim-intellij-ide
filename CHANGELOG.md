@@ -4,6 +4,16 @@ Ce projet suit un changelog simple, orienté releases GitHub.
 
 ## Unreleased
 
+## v2.1.1 (2026-01-16)
+
+### 📚 Documentation
+
+- **Cleanup**: Suppression de `ANALYSIS_REPORT.md` (rapport obsolète)
+- **Consolidation**: Fusion de `README_PRECOMMIT.md` dans `CONTRIBUTING.md`
+- **Amélioration**: Ajout section Profils dans README pour meilleure découvrabilité
+- **Références**: Ajout liens vers `PROFILES.md` et `PROJECT_CONFIG.md` dans README
+- **FAQ**: Mise à jour avec options de personnalisation (profils, config projet)
+
 ## v2.1.0 (2026-01-16)
 
 ### 🚀 Nouvelles Fonctionnalités
