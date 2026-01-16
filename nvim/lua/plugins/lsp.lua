@@ -57,7 +57,6 @@ return {
         map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
         map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
         map("n", "gr", vim.lsp.buf.references, "Find references")
-        map("n", "gR", vim.lsp.buf.references, "Find references (alt)")
         map("n", "K", vim.lsp.buf.hover, "Hover documentation")
         map("n", "<C-k>", vim.lsp.buf.signature_help, "Signature help")
         map("i", "<C-k>", vim.lsp.buf.signature_help, "Signature help")
