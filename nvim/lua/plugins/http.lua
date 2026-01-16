@@ -45,28 +45,4 @@ return {
       vim.keymap.set("n", "<leader>rl", "<Plug>RestNvimLast", { desc = "Rerun last HTTP request" })
     end,
   },
-
-  -- Support de fichier .http / .rest
-  {
-    "mistweaverco/kulala.nvim",
-    ft = { "http", "rest" },
-    config = function()
-      require("kulala").setup({
-        -- Configuration par défaut
-        default_view = "body",
-        default_env = "dev",
-        debug = false,
-      })
-
-      vim.keymap.set("n", "<leader>kr", function()
-        require("kulala").run()
-      end, { desc = "Kulala run" })
-      vim.keymap.set("n", "<leader>ki", function()
-        require("kulala").inspect()
-      end, { desc = "Kulala inspect" })
-      vim.keymap.set("n", "<leader>kt", function()
-        require("kulala").toggle_view()
-      end, { desc = "Kulala toggle view" })
-    end,
-  },
 }
