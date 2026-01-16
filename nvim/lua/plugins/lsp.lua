@@ -1,4 +1,10 @@
 return {
+  -- Schemastore for JSON/YAML schema validation
+  {
+    "b0o/schemastore.nvim",
+    lazy = true,
+  },
+
   -- Mason still used only as installer
   {
     "williamboman/mason.nvim",
@@ -41,6 +47,7 @@ return {
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "SmiteshP/nvim-navic",
+      "b0o/schemastore.nvim",
     },
     config = function()
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -72,11 +79,20 @@ return {
         end
       end
 
+      local schemastore = require("schemastore")
+
       local servers = {
         ts_ls = {},
         prismals = {},
         tailwindcss = {},
-        jsonls = {},
+        jsonls = {
+          settings = {
+            json = {
+              schemas = schemastore.json.schemas(),
+              validate = { enable = true },
+            },
+          },
+        },
         html = {},
         cssls = {},
         eslint = {},
@@ -85,12 +101,11 @@ return {
         yamlls = {
           settings = {
             yaml = {
-              schemas = {
-                kubernetes = "*.yaml",
-                ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
-                ["http://json.schemastore.org/ansible-playbook"] = "playbook.yml",
-                ["http://json.schemastore.org/docker-compose"] = "docker-compose*.yml",
+              schemaStore = {
+                enable = false,
+                url = "",
               },
+              schemas = schemastore.yaml.schemas(),
               format = { enable = true },
               validate = true,
               hover = true,

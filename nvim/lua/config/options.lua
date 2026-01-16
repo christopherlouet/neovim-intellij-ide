@@ -45,7 +45,7 @@ vim.opt.undofile = true
 vim.opt.undolevels = 10000
 
 -- Sessions: keep localoptions so filetype/highlighting restore correctly
-vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
 -- Ensure Node/npm installed via NVM are visible to Neovim (especially when launched from GUI)
 do
