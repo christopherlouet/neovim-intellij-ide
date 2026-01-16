@@ -65,7 +65,7 @@ return {
     end,
   },
 
-  { "numToStr/Comment.nvim", lazy = false, opts = { mappings = { basic = true, extra = false } } },
+  { "numToStr/Comment.nvim", event = "VeryLazy", opts = { mappings = { basic = true, extra = false } } },
   {
     "kylechui/nvim-surround",
     event = "VeryLazy",
@@ -100,6 +100,7 @@ return {
   -- Rename with live preview
   {
     "smjonas/inc-rename.nvim",
+    cmd = "IncRename",
     config = function()
       require("inc_rename").setup()
     end,
