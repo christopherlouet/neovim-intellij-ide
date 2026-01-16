@@ -108,7 +108,14 @@ if is_debian_like; then
   if [[ "$OS_ID" == "ubuntu" ]]; then
     run "sudo apt install -y software-properties-common"
   fi
-  run "python3 -m pip install --user -U pynvim || true"
+  # pynvim installation (non-blocking, may fail on PEP 668 systems)
+  if [ "$DRY_RUN" -eq 1 ]; then
+    echo "[dry-run] python3 -m pip install --user -U pynvim"
+  else
+    python3 -m pip install --user -U pynvim 2>/dev/null || \
+    python3 -m pip install --user --break-system-packages -U pynvim 2>/dev/null || \
+    echo "   [warn] pynvim install skipped (use venv or apt install python3-pynvim)"
+  fi
   if ! need_cmd fd && need_cmd fdfind; then
     run "mkdir -p \"${HOME}/.local/bin\""
     run "ln -sf \"$(command -v fdfind)\" \"${HOME}/.local/bin/fd\""
@@ -259,7 +266,18 @@ echo "ou manuellement via :Mason"
 say "8) Installation pre-commit (optionnel)"
 if need_cmd python3; then
   echo "Installation de pre-commit pour validation automatique..."
-  if run "python3 -m pip install --user pre-commit"; then
+  PRECOMMIT_OK=0
+  if [ "$DRY_RUN" -eq 1 ]; then
+    echo "[dry-run] python3 -m pip install --user pre-commit"
+    PRECOMMIT_OK=1
+  else
+    if python3 -m pip install --user pre-commit 2>/dev/null; then
+      PRECOMMIT_OK=1
+    elif python3 -m pip install --user --break-system-packages pre-commit 2>/dev/null; then
+      PRECOMMIT_OK=1
+    fi
+  fi
+  if [ "$PRECOMMIT_OK" -eq 1 ]; then
     echo "   ✓ pre-commit installé"
     echo ""
     echo "Pour activer les hooks Git:"
@@ -267,7 +285,7 @@ if need_cmd python3; then
     echo "  pre-commit install"
     echo "  pre-commit install --hook-type commit-msg"
   else
-    echo "   ⚠ Échec installation pre-commit (non-bloquant)"
+    echo "   ⚠ pre-commit install skipped (use venv or apt install pre-commit)"
   fi
 else
   echo "Python3 non trouvé - pre-commit non installé"
