@@ -65,17 +65,18 @@ return {
     end,
   },
 
-  { "numToStr/Comment.nvim", lazy = false, opts = { mappings = { basic = true, extra = false } } },
+  { "numToStr/Comment.nvim", event = "VeryLazy", opts = { mappings = { basic = true, extra = false } } },
   {
     "kylechui/nvim-surround",
+    event = "VeryLazy",
     version = "*",
     opts = {
       keymaps = {
-        normal = "gs",
-        normal_cur = "gss",
-        normal_line = "gS",
-        normal_cur_line = "gSS",
-        visual = "gs",
+        normal = "ys",
+        normal_cur = "yss",
+        normal_line = "yS",
+        normal_cur_line = "ySS",
+        visual = "S",
         delete = "ds",
         change = "cs",
         change_line = "cS",
@@ -99,6 +100,7 @@ return {
   -- Rename with live preview
   {
     "smjonas/inc-rename.nvim",
+    cmd = "IncRename",
     config = function()
       require("inc_rename").setup()
     end,

@@ -1,4 +1,10 @@
 return {
+  -- Schemastore for JSON/YAML schema validation
+  {
+    "b0o/schemastore.nvim",
+    lazy = true,
+  },
+
   -- Mason still used only as installer
   {
     "williamboman/mason.nvim",
@@ -35,12 +41,13 @@ return {
     end,
   },
 
-  -- Neovim 0.11 native LSP configuration
+  -- LSP configuration (Neovim 0.11+ native or lspconfig fallback)
   {
     "neovim/nvim-lspconfig",
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "SmiteshP/nvim-navic",
+      "b0o/schemastore.nvim",
     },
     config = function()
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -57,7 +64,6 @@ return {
         map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
         map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
         map("n", "gr", vim.lsp.buf.references, "Find references")
-        map("n", "gR", vim.lsp.buf.references, "Find references (alt)")
         map("n", "K", vim.lsp.buf.hover, "Hover documentation")
         map("n", "<C-k>", vim.lsp.buf.signature_help, "Signature help")
         map("i", "<C-k>", vim.lsp.buf.signature_help, "Signature help")
@@ -73,11 +79,20 @@ return {
         end
       end
 
+      local schemastore = require("schemastore")
+
       local servers = {
         ts_ls = {},
         prismals = {},
         tailwindcss = {},
-        jsonls = {},
+        jsonls = {
+          settings = {
+            json = {
+              schemas = schemastore.json.schemas(),
+              validate = { enable = true },
+            },
+          },
+        },
         html = {},
         cssls = {},
         eslint = {},
@@ -86,12 +101,11 @@ return {
         yamlls = {
           settings = {
             yaml = {
-              schemas = {
-                kubernetes = "*.yaml",
-                ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
-                ["http://json.schemastore.org/ansible-playbook"] = "playbook.yml",
-                ["http://json.schemastore.org/docker-compose"] = "docker-compose*.yml",
+              schemaStore = {
+                enable = false,
+                url = "",
               },
+              schemas = schemastore.yaml.schemas(),
               format = { enable = true },
               validate = true,
               hover = true,
@@ -108,7 +122,11 @@ return {
       for server, config in pairs(servers) do
         config.capabilities = capabilities
         config.on_attach = on_attach
-        vim.lsp.config(server, config)
+        if vim.lsp.config then
+          vim.lsp.config(server, config)
+        else
+          require("lspconfig")[server].setup(config)
+        end
       end
     end,
   },
@@ -118,6 +136,4 @@ return {
     dependencies = { "neovim/nvim-lspconfig" },
     opts = { highlight = true },
   },
-
-  { "prisma/vim-prisma", ft = "prisma" },
 }

@@ -9,7 +9,6 @@ map("i", "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 map("n", "<leader>qa", "<cmd>qa<cr>", { desc = "Quit all" })
-map("n", "<leader>qq", "<cmd>q<cr>", { desc = "Quit" })
 
 -- ============================
 -- Navigation fenêtres
@@ -100,15 +99,6 @@ map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 map("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
 map("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line diagnostics" })
-
--- ============================
--- LSP "IntelliJ-like"
--- ============================
-map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename (Refactor)" })
-map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
-map("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
-map("n", "gR", vim.lsp.buf.references, { desc = "Find references" })
-map("n", "K", vim.lsp.buf.hover, { desc = "Quick doc" })
 
 -- IncRename (preview live)
 map("n", "<leader>rN", function()
