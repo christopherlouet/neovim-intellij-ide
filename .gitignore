@@ -63,3 +63,11 @@ coverage/
 # ======================
 *.tar.gz
 *.zip
+
+# ======================
+# Claude Code
+# ======================
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+CLAUDE.local.md.example
