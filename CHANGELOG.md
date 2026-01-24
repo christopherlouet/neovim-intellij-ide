@@ -4,6 +4,54 @@ Ce projet suit un changelog simple, orienté releases GitHub.
 
 ## Unreleased
 
+## v2.2.0 (2026-01-24)
+
+### 🔒 Sécurité
+
+- **Feat**: Sandbox pour `.nvim.lua` - Exécution restreinte des configs projet avec APIs limitées
+- **Feat**: Security logging - Audit des événements trust/load dans `~/.local/state/nvim/security.log`
+- **Feat**: Bootstrap verification - Vérification de l'intégrité de lazy.nvim au démarrage
+- **Fix**: Permissions trust database - Fichier `trusted_projects.json` restreint (0600)
+- **Fix**: Validation taille body HTTP - Protection contre les payloads malveillants
+
+### 🏗️ Architecture
+
+- **Refactor**: Décomposition `ui.lua` (472 lignes) → 7 modules spécialisés
+  - `theme.lua` - Colorscheme et icônes
+  - `statusline.lua` - Lualine et bufferline
+  - `feedback.lua` - Notifications et which-key
+  - `noice.lua` - Interface messages
+  - `diagnostics.lua` - Indentation et trouble
+  - `session.lua` - Sessions et startuptime
+- **Refactor**: Création module `utils/` avec fonctions partagées
+  - `utils/init.lua` - Fonction `has()` unifiée
+  - `utils/env.lua` - Gestion PATH/NVM et compatibilité LSP
+  - `utils/sandbox.lua` - Environnement d'exécution restreint
+  - `utils/security_log.lua` - Logging d'audit
+- **Refactor**: Extraction constantes → `config/defaults.lua`
+- **Refactor**: Simplification `lsp.lua` on_attach (keymaps et navic extraits)
+
+### 🧪 Tests
+
+- **Feat**: 43 nouveaux tests pour modules utils (sandbox, security_log, env, defaults)
+- **Feat**: 35 nouveaux tests pour modules UI (structure et plugin specs)
+- **Total**: 104 tests passants
+
+### 📚 Documentation
+
+- **Docs**: `docs/SECURITY.md` - Documentation complète du modèle de sécurité
+
+### 🧹 Maintenance
+
+- **Chore**: Exclusion config Claude Code du versionning
+
+### 📊 Statistiques
+
+- 23 fichiers modifiés
+- +1798 / -519 lignes
+- Couverture tests: 104 tests
+- Score sécurité: 8.5/10
+
 ## v2.1.1 (2026-01-16)
 
 ### 📚 Documentation
