@@ -7,13 +7,7 @@ return {
     },
     config = function()
       local null_ls = require("null-ls")
-
-      -- Helper: reliably check whether a binary exists in PATH.
-      -- Do NOT rely on null-ls conditional utils (their API isn't stable across
-      -- null-ls/none-ls versions, which caused "attempt to call field 'executable'".
-      local function has(bin)
-        return vim.fn.exepath(bin) ~= ""
-      end
+      local has = require("utils").has
 
       local sources = {
         null_ls.builtins.formatting.prettier.with({

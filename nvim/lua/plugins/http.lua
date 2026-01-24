@@ -1,3 +1,5 @@
+local defaults = require("config.defaults")
+
 return {
   -- REST client pour tester APIs directement depuis Neovim
   {
@@ -28,7 +30,19 @@ return {
           formatters = {
             json = "jq",
             html = function(body)
-              return vim.fn.system({ "tidy", "-i", "-q", "-" }, body)
+              -- Security: limit body size to prevent DoS
+              local max_size = defaults.security.max_body_size
+              if not body or #body == 0 then
+                return body
+              end
+              if #body > max_size then
+                return "-- Body too large to format (>" .. (max_size / 1024) .. "KB) --\n" .. body
+              end
+              local ok, result = pcall(vim.fn.system, { "tidy", "-i", "-q", "-" }, body)
+              if not ok then
+                return "-- HTML formatting failed --\n" .. body
+              end
+              return result
             end,
           },
         },

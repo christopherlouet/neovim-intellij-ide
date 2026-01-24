@@ -1,4 +1,5 @@
 local M = {}
+local utils = require("utils")
 
 local function ok(msg)
   vim.api.nvim_echo({ { "[OK] " .. msg, "DiagnosticOk" } }, false, {})
@@ -12,9 +13,7 @@ local function err(msg)
   vim.api.nvim_echo({ { "[ERROR] " .. msg, "DiagnosticError" } }, false, {})
 end
 
-local function has(bin)
-  return vim.fn.executable(bin) == 1
-end
+local has = utils.has
 
 local function version_ge(major, minor)
   -- nvim 0.11+ exposes vim.version()

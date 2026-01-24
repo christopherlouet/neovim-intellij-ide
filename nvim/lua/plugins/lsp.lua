@@ -50,12 +50,12 @@ return {
       "b0o/schemastore.nvim",
     },
     config = function()
+      local defaults = require("config.defaults")
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
-      local navic = require("nvim-navic")
-
-      local function on_attach(client, bufnr)
+      -- Setup LSP keymaps for a buffer
+      local function setup_lsp_keymaps(bufnr)
         local map = function(mode, lhs, rhs, desc)
           vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
         end
@@ -70,13 +70,21 @@ return {
         map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
         map("n", "<leader>ca", vim.lsp.buf.code_action, "Code action")
         map("n", "<leader>fd", function()
-          vim.lsp.buf.format({ timeout_ms = 2000 })
+          vim.lsp.buf.format({ timeout_ms = defaults.lsp.format_timeout_ms })
         end, "Format file")
+      end
 
+      -- Setup navic breadcrumbs if supported
+      local function setup_navic(client, bufnr)
         if client.server_capabilities.documentSymbolProvider then
-          navic.attach(client, bufnr)
+          require("nvim-navic").attach(client, bufnr)
           vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
         end
+      end
+
+      local function on_attach(client, bufnr)
+        setup_lsp_keymaps(bufnr)
+        setup_navic(client, bufnr)
       end
 
       local schemastore = require("schemastore")

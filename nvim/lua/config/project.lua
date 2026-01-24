@@ -5,8 +5,11 @@
 -- - Only loads from directories explicitly trusted by the user
 -- - Trust is stored in stdpath("data")/trusted_projects.json
 -- - User can trust/untrust via :ProjectConfig commands
+-- - Code is executed in a sandboxed environment with restricted API access
 
 local M = {}
+local sandbox = require("utils.sandbox")
+local security_log = require("utils.security_log")
 
 -- Project config file name
 M.config_file = ".nvim.lua"
@@ -41,6 +44,8 @@ local function save_trusted_projects(projects)
   local ok, json = pcall(vim.json.encode, projects)
   if ok then
     vim.fn.writefile({ json }, path)
+    -- Security: restrict file permissions to owner only (0600 = 384)
+    vim.uv.fs_chmod(path, 384)
   end
 end
 
@@ -55,6 +60,7 @@ function M.trust(dir)
   local projects = load_trusted_projects()
   projects[dir] = true
   save_trusted_projects(projects)
+  security_log.log_trust(dir, true)
   vim.notify("Trusted: " .. dir, vim.log.levels.INFO)
 end
 
@@ -63,6 +69,7 @@ function M.untrust(dir)
   local projects = load_trusted_projects()
   projects[dir] = nil
   save_trusted_projects(projects)
+  security_log.log_trust(dir, false)
   vim.notify("Untrusted: " .. dir, vim.log.levels.INFO)
 end
 
@@ -111,15 +118,17 @@ function M.load(dir)
     return false
   end
 
-  -- Load the config
-  local ok, err = pcall(dofile, config_path)
+  -- Load the config in a sandboxed environment
+  local ok, err = sandbox.dofile(config_path)
+  security_log.log_load(config_path, ok, err)
+
   if not ok then
     vim.notify("Error loading project config: " .. tostring(err), vim.log.levels.ERROR)
     return false
   end
 
   if vim.g.nvim_project_verbose then
-    vim.notify("Loaded project config: " .. config_path, vim.log.levels.INFO)
+    vim.notify("Loaded project config (sandboxed): " .. config_path, vim.log.levels.INFO)
   end
 
   return true
