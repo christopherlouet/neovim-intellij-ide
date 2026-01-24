@@ -6,47 +6,55 @@ local M = {}
 local storage_path = vim.fn.stdpath("data") .. "/theme_choice.json"
 
 -- Available themes configuration
+-- lazy_name must match the plugin name as registered in lazy.nvim
 local themes = {
   {
     name = "cyberpunk",
     colorscheme = "cyberdream",
     plugin = "scottmckendry/cyberdream.nvim",
+    lazy_name = "cyberdream.nvim",
     description = "Neon cyberpunk aesthetic",
   },
   {
     name = "matrix",
     colorscheme = "matrix",
     plugin = "iruzo/matrix-nvim",
+    lazy_name = "matrix-nvim",
     description = "Matrix-inspired green terminal",
   },
   {
     name = "dracula",
     colorscheme = "dracula",
     plugin = "Mofiqul/dracula.nvim",
+    lazy_name = "dracula.nvim",
     description = "Dark theme with vibrant colors",
   },
   {
     name = "catppuccin",
     colorscheme = "catppuccin",
     plugin = "catppuccin/nvim",
+    lazy_name = "catppuccin",
     description = "Soothing pastel theme",
   },
   {
     name = "nord",
     colorscheme = "nord",
     plugin = "shaunsingh/nord.nvim",
+    lazy_name = "nord.nvim",
     description = "Arctic, north-bluish color palette",
   },
   {
     name = "gruvbox",
     colorscheme = "gruvbox",
     plugin = "ellisonleao/gruvbox.nvim",
+    lazy_name = "gruvbox.nvim",
     description = "Retro groove color scheme",
   },
   {
     name = "tokyo-night",
     colorscheme = "tokyonight",
     plugin = "folke/tokyonight.nvim",
+    lazy_name = "tokyonight.nvim",
     description = "Clean, dark Tokyo Night theme",
   },
 }

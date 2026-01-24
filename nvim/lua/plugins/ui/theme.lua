@@ -49,8 +49,16 @@ return {
       local saved = theme_selector.load_saved_theme()
 
       if saved and saved ~= "tokyo-night" then
-        -- Store for lazy-loaded theme plugins to apply
-        vim.g._theme_to_apply = saved
+        -- Load the saved theme plugin and apply colorscheme
+        local theme = theme_selector.get_theme_by_name(saved)
+        if theme then
+          -- Force load the lazy plugin using its registered name
+          require("lazy").load({ plugins = { theme.lazy_name } })
+          -- Apply the colorscheme after plugin is loaded
+          vim.schedule(function()
+            pcall(vim.cmd.colorscheme, theme.colorscheme)
+          end)
+        end
       else
         -- Apply tokyonight as default
         vim.cmd.colorscheme("tokyonight")

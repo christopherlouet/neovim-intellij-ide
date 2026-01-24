@@ -48,6 +48,7 @@ return {
       },
     },
     opts = function(_, opts)
+      opts.sources = opts.sources or {}
       table.insert(opts.sources, { name = "vim-dadbod-completion" })
     end,
   },
