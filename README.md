@@ -35,7 +35,7 @@ Voir GETTING_STARTED.md
 
 ### Interface & UX (IDE-like)
 
-- Thème **Tokyonight**
+- **7 thèmes** avec sélecteur (`<leader>ut`) : Tokyo Night, Dracula, Catppuccin, Nord, Gruvbox, Cyberpunk, Matrix
 - Statusline **Lualine**
 - Onglets **Bufferline**
 - Explorateur de fichiers **NvimTree**

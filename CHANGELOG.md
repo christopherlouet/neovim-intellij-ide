@@ -4,6 +4,13 @@ Ce projet suit un changelog simple, orienté releases GitHub.
 
 ## Unreleased
 
+### ✨ Nouvelles Fonctionnalités
+
+- **Feat**: Sélecteur de thèmes avec 7 colorschemes (`<leader>ut`)
+  - Tokyo Night (défaut), Dracula, Catppuccin, Nord, Gruvbox, Cyberpunk, Matrix
+  - Persistance du choix entre sessions
+  - Interface via `vim.ui.select` (dressing.nvim)
+
 ## v2.2.0 (2026-01-24)
 
 ### 🔒 Sécurité

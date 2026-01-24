@@ -133,6 +133,26 @@ Ce script nettoie proprement le cache et les fichiers temporaires sans toucher �
 <leader>e    " Toggle NvimTree
 ```
 
+### Changer de thème
+
+7 thèmes sont disponibles avec persistance du choix :
+
+```vim
+<leader>ut   " Ouvrir le sélecteur de thème
+```
+
+| Thème | Description |
+|-------|-------------|
+| Tokyo Night | Clean dark theme (défaut) |
+| Dracula | Dark theme with vibrant colors |
+| Catppuccin | Soothing pastel theme |
+| Nord | Arctic, north-bluish palette |
+| Gruvbox | Retro warm colors |
+| Cyberpunk | Neon cyberpunk aesthetic |
+| Matrix | Matrix-inspired green terminal |
+
+> 💡 Le thème choisi est automatiquement sauvegardé et restauré au prochain lancement.
+
 ---
 
 ## ⌨️ Raccourcis essentiels

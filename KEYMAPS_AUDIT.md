@@ -125,8 +125,9 @@
 - ✅ `[q` - Previous trouble/quickfix
 - ✅ `]q` - Next trouble/quickfix
 
-### UI (nvim/lua/plugins/ui.lua)
+### UI (nvim/lua/plugins/ui/)
 
+- ✅ `<leader>ut` - Sélecteur de thème (7 colorschemes) (**AJOUTÉ**)
 - ✅ `<leader>un` - Dismiss all notifications
 
 ### Noice (nvim/lua/plugins/ui.lua)
