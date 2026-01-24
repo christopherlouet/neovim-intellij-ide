@@ -4,12 +4,33 @@ Ce projet suit un changelog simple, orienté releases GitHub.
 
 ## Unreleased
 
+## v2.3.0 (2026-01-24)
+
 ### ✨ Nouvelles Fonctionnalités
 
 - **Feat**: Sélecteur de thèmes avec 7 colorschemes (`<leader>ut`)
   - Tokyo Night (défaut), Dracula, Catppuccin, Nord, Gruvbox, Cyberpunk, Matrix
-  - Persistance du choix entre sessions
+  - Persistance du choix entre sessions (fichier JSON dans `~/.local/share/nvim/`)
   - Interface via `vim.ui.select` (dressing.nvim)
+  - Nouveau module `utils/theme_selector.lua`
+
+### 🐛 Corrections
+
+- **Fix**: Correction du plugin matrix (remplacé `Jeosas/matrix.nvim` par `iruzo/matrix-nvim`)
+- **Fix**: Correction de l'erreur nil dans `database.lua` pour nvim-cmp sources
+- **Fix**: Restauration du thème sauvegardé au démarrage (chargement forcé du plugin Lazy)
+
+### 📚 Documentation
+
+- **Docs**: Mise à jour README, CHANGELOG, GETTING_STARTED, KEYMAPS_AUDIT
+- **Docs**: Ajout du raccourci `<leader>ut` dans install.sh et nvim/README.md
+
+### 📊 Statistiques
+
+- 4 commits
+- 9 fichiers modifiés
+- +150 lignes (nouveau module theme_selector)
+- 7 thèmes disponibles
 
 ## v2.2.0 (2026-01-24)
 
