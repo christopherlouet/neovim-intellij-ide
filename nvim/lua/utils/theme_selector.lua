@@ -16,7 +16,7 @@ local themes = {
   {
     name = "matrix",
     colorscheme = "matrix",
-    plugin = "Jeosas/matrix.nvim",
+    plugin = "iruzo/matrix-nvim",
     description = "Matrix-inspired green terminal",
   },
   {

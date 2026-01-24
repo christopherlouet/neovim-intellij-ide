@@ -160,10 +160,12 @@ return {
 
   -- Matrix - Matrix-inspired green terminal
   {
-    "Jeosas/matrix.nvim",
+    "iruzo/matrix-nvim",
     lazy = true,
     priority = 1000,
     config = function()
+      vim.g.matrix_contrast = true
+      vim.g.matrix_borders = true
       apply_if_saved("matrix", "matrix")
     end,
   },
